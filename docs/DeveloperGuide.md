@@ -309,13 +309,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to edit a particular contact
-2.  OfferFlow shows the company's current contact details
-3.  User edits contact details such as changing the email and/or phone number
-4.  User confirms all changes made to the company contact details
-5.  OfferFlow updates the company contact details to reflect the new changes if any
+1. User requests to edit a particular contact
+2. OfferFlow shows the company's current contact details
+3. User edits contact details such as changing the email and/or phone number
+4. User confirms all changes made to the company contact details
+5. OfferFlow updates the company contact details to reflect the new changes if any
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
@@ -327,13 +327,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given phone number is invalid.
 
-    * 3a1. OfferFlow shows an error message.
+   * 3a1. OfferFlow shows an error message.
 
       Use case resumes at step 3.
 
 * 3b. The given email address is invalid.
 
-    * 3b1. OfferFlow shows an error message.
+   * 3b1. OfferFlow shows an error message.
 
       Use case resumes at step 3.
 
@@ -341,13 +341,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to edit a particular company application
-2.  OfferFlow shows the company's current application details
-3.  User edits application details such as adding upcoming interviews and/or update application date
-4.  User confirms all changes made to the application
-5.  OfferFlow updates the application details to reflect the new changes if any
+1. User requests to edit a particular company application
+2. OfferFlow shows the company's current application details
+3. User edits application details such as adding upcoming interviews and/or update application date
+4. User confirms all changes made to the application
+5. OfferFlow updates the application details to reflect the new changes if any
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
@@ -355,48 +355,47 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
    * 1a1. OfferFlow shows an error message.
 
-  Use case ends.
+      Use case ends.
 
 * 3a. The given interview date/time is invalid.
 
-    * 3a1. OfferFlow shows an error message.
+   * 3a1. OfferFlow shows an error message.
 
       Use case resumes at step 3.
 
 * 3b. The given application date is invalid.
 
-    * 3b1. OfferFlow shows an error message.
+   * 3b1. OfferFlow shows an error message.
 
       Use case resumes at step 3.
 
+**Use case: Update status**
 
 **MSS**
 
-1. Main Success Scenario (MSS)
-2. User requests to view the list of job applications.
-3. OfferFlow displays the list of saved job applications.
-4. User selects a specific job application.
-5. OfferFlow displays the details of the selected application, including its current status.
-6. User requests to update the application status.
-7. OfferFlow requests the new status value.
-8. User specifies a new status (e.g., plan to apply, applied, interviewing, rejected, offered).
-9. OfferFlow updates the application status.
-10. OfferFlow displays the updated application information.
+1. User requests to update the application status.
+2. OfferFlow requests the new status value.
+3. User specifies a new status (e.g., plan to apply, applied, interviewing, rejected, offered).
+4. OfferFlow updates the application status.
+5. OfferFlow displays the updated application information.
 
-      Use case ends.
+   Use case ends.
 
-   **Extensions**
+**Extensions**
 
-   * 3a. Application not found
+* 3a. Application not found
 
-      * 3a1. OfferFlow informs the user that the application cannot be located.
-      * 3a2. User returns to the application list.
+   * 3a1. OfferFlow informs the user that the application cannot be located.
+
+   * 3a2. User returns to the application list.
 
       Use case resumes from step 2.
 
-   * 7a. Invalid status entered
-      * 7a1. OfferFlow informs the user that the status is invalid.
-      * 7a2. OfferFlow requests the user to specify a valid status.
+* 7a. Invalid status entered
+
+   * 7a1. OfferFlow informs the user that the status is invalid.
+
+   * 7a2. OfferFlow requests the user to specify a valid status.
 
       Use case resumes from step 7.
 
@@ -405,19 +404,21 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. User request to add new job application.
-2. OfferFlow prompts for or accepts the required job application details.
+2. OfferFlow prompts for the required job application details.
 3. User enters the job application details.
 4. OfferFlow creates the new job application.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
-3a. The user enters details in an invalid format.
-   3a1. OfferFlow shows an error message.
-   3a2. User re-enters the details.
+   * 3a. The user enters details in an invalid format.
 
-Use case resumes at step 3.
+      * 3a1. OfferFlow shows an error message.
+
+      * 3a2. User re-enters the details.
+
+         Use case resumes at step 3.
 
 ### Non-Functional Requirements
 
