@@ -422,6 +422,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
          Use case resumes at step 3.
 
+**Use case: Delete Contact**
+
+**MSS**
+
+1. User request to delete a specific job application.
+2. OfferFlow deletes the job application.
+3. OfferFlow updates the application list.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The user enters details in an invalid format.
+
+    * 1a1. OfferFlow shows an error message.
+
+    * 1a2. User re-enters the details.
+
+      Use case resumes at step 2.
+
+* 2a. The user specified a non-existent application.
+
+    * 2a1. OfferFlow shows an error message.
+
+      Use case resumes at step 1.
+
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
