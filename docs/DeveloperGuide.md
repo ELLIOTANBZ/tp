@@ -427,6 +427,23 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4. The user interface should be simple and intuitive so that first-time users can learn to use the application without a tutorial.
+5. Components of the program interface should be of consistent sizes, shapes and colors to ensure a coherent user experience.
+6. The system should respond to and complete execution of any user command within 5 seconds.
+7. The system should maintain smooth performance when managing at least 200 application entries.
+8. Loading and updating of programmes files should be efficient and quick to ensure a streamline experience.
+9. The program should execute commands efficiently as the user submits an increasing amount of applications.
+10. The program should finish executing a user command before executing the next.
+11. The program should log past executions of user commands, so that users can undo their actions.
+12. The program should save its current state after every execution of a user command.
+13. The program should be able to revert to a limited number of previous states when a user undo.
+14. The system should handle invalid commands gracefully and inform the user of the correct command format
+15. When an error occurs, the system should remain in or return to the last valid state without crashing
+16. The program should handle errors gracefully without crashing
+17. The program should explicitly inform the user of the reasons for errors.
+18. The program should remain or return to its latest correct state when an error occurs
+19. The program code should follow the coding standards of cs2103.
+20. The application should run on both Windows and macOS environments.
 
 *{More to be added}*
 
