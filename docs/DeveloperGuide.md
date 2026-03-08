@@ -303,55 +303,93 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `OfferFlow` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: Edit a company contact**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. User requests to edit a particular contact
+2. OfferFlow shows the company's current contact details
+3. User edits contact details such as changing the email and/or phone number
+4. User confirms all changes made to the company contact details
+5. OfferFlow updates the company contact details to reflect the new changes if any
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The company contact cannot be found.
 
-  Use case ends.
-
-* 3a. The given index is invalid.
-
-    * 3a1. AddressBook shows an error message.
-
-      Use case resumes at step 2.
-
-*{More to be added}*
-
-
-**MSS**
-
-1. Main Success Scenario (MSS)
-2. User requests to view the list of job applications.
-3. OfferFlow displays the list of saved job applications.
-4. User selects a specific job application.
-5. OfferFlow displays the details of the selected application, including its current status.
-6. User requests to update the application status.
-7. OfferFlow requests the new status value.
-8. User specifies a new status (e.g., plan to apply, applied, interviewing, rejected, offered).
-9. OfferFlow updates the application status.
-10. OfferFlow displays the updated application information.
+   * 1a1. OfferFlow shows an error message.
 
       Use case ends.
 
-   **Extensions**
+* 3a. The given phone number is invalid.
 
-   * 3a. Application not found
+   * 3a1. OfferFlow shows an error message.
 
-      * 3a1. OfferFlow informs the user that the application cannot be located.
-      * 3a2. User returns to the application list.
+      Use case resumes at step 3.
+
+* 3b. The given email address is invalid.
+
+   * 3b1. OfferFlow shows an error message.
+
+      Use case resumes at step 3.
+
+**Use case: Edit application**
+
+**MSS**
+
+1. User requests to edit a particular company application
+2. OfferFlow shows the company's current application details
+3. User edits application details such as adding upcoming interviews and/or update application date
+4. User confirms all changes made to the application
+5. OfferFlow updates the application details to reflect the new changes if any
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The company application cannot be found.
+
+   * 1a1. OfferFlow shows an error message.
+
+      Use case ends.
+
+* 3a. The given interview date/time is invalid.
+
+   * 3a1. OfferFlow shows an error message.
+
+      Use case resumes at step 3.
+
+* 3b. The given application date is invalid.
+
+   * 3b1. OfferFlow shows an error message.
+
+      Use case resumes at step 3.
+
+**Use case: Update status**
+
+**Use case: Update status**
+
+**MSS**
+
+1. User requests to update the application status.
+2. OfferFlow requests the new status value.
+3. User specifies a new status (e.g., plan to apply, applied, interviewing, rejected, offered).
+4. OfferFlow updates the application status.
+5. OfferFlow displays the updated application information.
+
+   Use case ends.
+
+**Extensions**
+
+* 3a. Application not found
+
+   * 3a1. OfferFlow informs the user that the application cannot be located.
+
+   * 3a2. User returns to the application list.
 
       Use case resumes from step 2.
 
@@ -361,11 +399,75 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes from step 7.
 
+**Use case: Create Contact**
+
+**MSS**
+
+1. User request to add new job application.
+2. OfferFlow prompts for the required job application details.
+3. User enters the job application details.
+4. OfferFlow creates the new job application.
+
+   Use case ends.
+
+**Extensions**
+
+   * 3a. The user enters details in an invalid format.
+
+      * 3a1. OfferFlow shows an error message.
+
+      * 3a2. User re-enters the details.
+
+         Use case resumes at step 3.
+
+**Use case: Delete Contact**
+
+**MSS**
+
+1. User request to delete a specific job application.
+2. OfferFlow deletes the job application.
+3. OfferFlow updates the application list.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The user enters details in an invalid format.
+
+    * 1a1. OfferFlow shows an error message.
+
+    * 1a2. User re-enters the details.
+
+      Use case resumes at step 2.
+
+* 2a. The user specified a non-existent application.
+
+    * 2a1. OfferFlow shows an error message.
+
+      Use case resumes at step 1.
+
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4. The user interface should be simple and intuitive so that first-time users can learn to use the application without a tutorial.
+5. Components of the program interface should be of consistent sizes, shapes and colors to ensure a coherent user experience.
+6. The system should respond to and complete execution of any user command within 5 seconds.
+7. The system should maintain smooth performance when managing at least 200 application entries.
+8. Loading and updating of programmes files should be efficient and quick to ensure a streamline experience.
+9. The program should execute commands efficiently as the user submits an increasing amount of applications.
+10. The program should finish executing a user command before executing the next.
+11. The program should log past executions of user commands, so that users can undo their actions.
+12. The program should save its current state after every execution of a user command.
+13. The program should be able to revert to a limited number of previous states when a user undo.
+14. The system should handle invalid commands gracefully and inform the user of the correct command format
+15. When an error occurs, the system should remain in or return to the last valid state without crashing
+16. The program should handle errors gracefully without crashing
+17. The program should explicitly inform the user of the reasons for errors.
+18. The program should remain or return to its latest correct state when an error occurs
+19. The program code should follow the coding standards of cs2103.
+20. The application should run on both Windows and macOS environments.
 
 *{More to be added}*
 
@@ -373,6 +475,21 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Mainstream OS**: Windows, Linux, Unix, MacOS
+* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Application**: A job or internship application submitted by the user to a company.
+* **Duplicate**:  A repeated Application with the same <Company_Name> and <Job_Role>.
+* **Contact**: A record containing information about a company or recruiter, including name, role, and company.
+* **Application Status**:  The current stage of a job application (e.g., Plan to Apply, Applied, Interviewing, Rejected, Offered).
+* **Notification**:  A reminder sent by OfferFlow to alert the user about upcoming deadlines or interview dates.
+* **Folder**:  A storage group that allows users to archive past job search sessions.
+* **Interaction**:   Any recorded communication or follow-up with a recruiter or company (e.g., email reply or interview invitation).
+* **Sample Data**:   Preloaded example entries that allow new users to explore the app before adding their own information.
+* **Cache / Archive**:  A way to store old job search records so that users can start a new job search while keeping historical data.
+* **Filtering**:  A feature that allows users to view applications based on certain attributes such as company name or deadline.
+
+
+
 
 --------------------------------------------------------------------------------------------------------------------
 
