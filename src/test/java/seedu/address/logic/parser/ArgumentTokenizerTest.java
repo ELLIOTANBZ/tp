@@ -58,7 +58,8 @@ public class ArgumentTokenizerTest {
         String argsString = "  some random string /t tag with leading and trailing spaces ";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString);
 
-        // Same string expected as preamble, but leading/trailing spaces should be trimmed
+        // Same string expected as preamble, but leading/trailing spaces should
+        // be trimmed
         assertPreamblePresent(argMultimap, argsString.trim());
 
     }
@@ -99,7 +100,8 @@ public class ArgumentTokenizerTest {
 
         /* Also covers: Reusing of the tokenizer multiple times */
 
-        // Reuse tokenizer on an empty string to ensure ArgumentMultimap is correctly reset
+        // Reuse tokenizer on an empty string to ensure ArgumentMultimap is
+        // correctly reset
         // (i.e. no stale values from the previous tokenizing remain)
         argsString = "";
         argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
@@ -108,11 +110,12 @@ public class ArgumentTokenizerTest {
 
         /* Also covers: testing for prefixes not specified as a prefix */
 
-        // Prefixes not previously given to the tokenizer should not return any values
+        // Prefixes not previously given to the tokenizer should not return any
+        // values
         argsString = unknownPrefix + "some value";
         argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
         assertArgumentAbsent(argMultimap, unknownPrefix);
-        assertPreamblePresent(argMultimap, argsString); // Unknown prefix is taken as part of preamble
+        assertPreamblePresent(argMultimap, argsString);
     }
 
     @Test

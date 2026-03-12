@@ -25,3 +25,4 @@ docs/_markbind/logs/
 
 # VS Code files
 .vscode/
+eclipse-java-formatter.xml
