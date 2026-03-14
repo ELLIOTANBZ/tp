@@ -23,9 +23,12 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Application;
+import seedu.address.model.person.Date;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Role;
+import seedu.address.model.person.Status;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -77,11 +80,14 @@ public class EditCommand extends Command {
         }
 
         Application personToEdit = lastShownList.get(index.getZeroBased());
+        personToEdit.setBeingEdited(true); //important: set this before editedPerson so isBeingEdited carries over
         Application editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSameApplication(editedPerson) && model.hasPerson(editedPerson)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
+
+        editedPerson.setBeingEdited(false); //TO REMOVE on creation of ExitCommand
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -100,8 +106,12 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Date updatedDate = editPersonDescriptor.getDate().orElse(personToEdit.getDate());
+        Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
+        Status updatedStatus = editPersonDescriptor.getStatus().orElse(personToEdit.getStatus());
 
-        return new Application(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        return new Application(updatedName, updatedPhone, updatedEmail, updatedAddress,
+                updatedTags, updatedDate, updatedRole, updatedStatus);
     }
 
     @Override
@@ -138,6 +148,9 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private Set<Tag> tags;
+        private Role role;
+        private Date date;
+        private Status status;
 
         public EditPersonDescriptor() {}
 
@@ -151,13 +164,16 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
+            setRole(toCopy.role);
+            setStatus(toCopy.status);
+            setDate(toCopy.date);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags, status, role, date);
         }
 
         public void setName(Name name) {
@@ -190,6 +206,30 @@ public class EditCommand extends Command {
 
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
+        }
+
+        public void setRole(Role role) {
+            this.role = role;
+        }
+
+        public Optional<Role> getRole() {
+            return Optional.ofNullable(role);
+        }
+
+        public void setStatus(Status status) {
+            this.status = status;
+        }
+
+        public Optional<Status> getStatus() {
+            return Optional.ofNullable(status);
+        }
+
+        public void setDate(Date date) {
+            this.date = date;
+        }
+
+        public Optional<Date> getDate() {
+            return Optional.ofNullable(date);
         }
 
         /**
@@ -225,7 +265,10 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
-                    && Objects.equals(tags, otherEditPersonDescriptor.tags);
+                    && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(status, otherEditPersonDescriptor.status)
+                    && Objects.equals(date, otherEditPersonDescriptor.date)
+                    && Objects.equals(role, otherEditPersonDescriptor.role);
         }
 
         @Override
@@ -236,6 +279,9 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("tags", tags)
+                    .add("status", status)
+                    .add("date", date)
+                    .add("role", role)
                     .toString();
         }
     }
