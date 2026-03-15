@@ -37,7 +37,6 @@ public class DeleteCommand extends Command {
         this.name = null;
         this.role = null;
         isIndexDelete = true;
-        System.out.println("3");
     }
 
     public DeleteCommand(Name name, Role role) {
@@ -45,7 +44,6 @@ public class DeleteCommand extends Command {
         this.name = name;
         this.role = role;
         isIndexDelete =  false;
-        System.out.println("67");
     }
 
     @Override
@@ -64,7 +62,6 @@ public class DeleteCommand extends Command {
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
-        System.out.println("1");
         Application personToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
@@ -72,7 +69,6 @@ public class DeleteCommand extends Command {
 
     public CommandResult executeNormalDelete(Model model) throws CommandException {
         requireNonNull(model);
-        System.out.println("2");
         SameCompanySameRolePredicate predicate = new SameCompanySameRolePredicate(name, role);
         model.updateFilteredPersonList(predicate);
         ObservableList<Application> target = model.getFilteredPersonList();
@@ -84,7 +80,6 @@ public class DeleteCommand extends Command {
 
         System.out.println(personToDelte.toString());
         model.deletePerson(personToDelte);
-        System.out.println("w");
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelte)));
     }
 
@@ -100,7 +95,17 @@ public class DeleteCommand extends Command {
         }
 
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
-        return targetIndex.equals(otherDeleteCommand.targetIndex);
+
+        if (isIndexDelete != otherDeleteCommand.isIndexDelete) {
+            return false;
+        }
+
+        if (isIndexDelete) {
+            return targetIndex.equals(otherDeleteCommand.targetIndex);
+        } else {
+            return name.equals(otherDeleteCommand.name)
+                    && role.equals(otherDeleteCommand.role);
+        }
     }
 
     @Override
