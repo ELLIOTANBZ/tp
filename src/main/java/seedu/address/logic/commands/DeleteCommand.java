@@ -69,18 +69,14 @@ public class DeleteCommand extends Command {
 
     public CommandResult executeNormalDelete(Model model) throws CommandException {
         requireNonNull(model);
+        List<Application> lastShownList = model.getFilteredPersonList();
         SameCompanySameRolePredicate predicate = new SameCompanySameRolePredicate(name, role);
-        model.updateFilteredPersonList(predicate);
-        ObservableList<Application> target = model.getFilteredPersonList();
-        if (target.isEmpty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-        }
 
-        Application personToDelte = target.get(0);
+        Application personToDelete = lastShownList.stream().filter(predicate).findFirst()
+                .orElseThrow(() -> new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX));
 
-        System.out.println(personToDelte.toString());
-        model.deletePerson(personToDelte);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelte)));
+        model.deletePerson(personToDelete);
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }
 
     @Override
