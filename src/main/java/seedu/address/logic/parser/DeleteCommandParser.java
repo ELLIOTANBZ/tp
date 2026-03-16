@@ -47,7 +47,6 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
             Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
-            System.out.println("2");
             return new DeleteCommand(name, role);
 
         } catch (ParseException pe) {

@@ -3,9 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Optional;
 
-import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -19,13 +17,17 @@ import seedu.address.model.person.*;
 public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person identified by the index number used in the displayed person list.\n"
+            + ":\n"
+            + "Delete via INDEX (Deletes the Application identified by the index number in the displayed person list)\n"
+            + "Delete via Name and Role (Deletes the Application with the exact Name and Role) \n"
             + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + "Example: " + COMMAND_WORD + " 1\n"
+            + "Parameters: Name (String), Role (String with no numbers) \n"
+            + "Example: " + COMMAND_WORD + " n/Goog r/CEO";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+
+    public static final String MESSAGE_DELETE_APPLICATION_SUCCESS = "Deleted Person: %1$s";
 
     private final boolean isIndexDelete;
     private final Index targetIndex;
@@ -49,34 +51,34 @@ public class DeleteCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         if (isIndexDelete) {
-            return executeIndexDelete(model);
+            return executeDeleteByIndex(model);
         } else {
-            return executeNormalDelete(model);
+            return executeDeleteByApplication(model);
         }
     }
 
-    public CommandResult executeIndexDelete(Model model) throws CommandException {
+    public CommandResult executeDeleteByIndex(Model model) throws CommandException {
         requireNonNull(model);
         List<Application> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_APPLICATION_DISPLAYED_INDEX);
         }
         Application personToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
+        return new CommandResult(String.format(MESSAGE_DELETE_APPLICATION_SUCCESS, Messages.format(personToDelete)));
     }
 
-    public CommandResult executeNormalDelete(Model model) throws CommandException {
+    public CommandResult executeDeleteByApplication(Model model) throws CommandException {
         requireNonNull(model);
         List<Application> lastShownList = model.getFilteredPersonList();
         SameCompanySameRolePredicate predicate = new SameCompanySameRolePredicate(name, role);
 
         Application personToDelete = lastShownList.stream().filter(predicate).findFirst()
-                .orElseThrow(() -> new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX));
+                .orElseThrow(() -> new CommandException(Messages.MESSAGE_INVALID_APPLICATION_IDENTIFIER));
 
         model.deletePerson(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
+        return new CommandResult(String.format(MESSAGE_DELETE_APPLICATION_SUCCESS, Messages.format(personToDelete)));
     }
 
     @Override
@@ -106,8 +108,15 @@ public class DeleteCommand extends Command {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .add("targetIndex", targetIndex)
-                .toString();
+        if (isIndexDelete) {
+            return new ToStringBuilder(this)
+                    .add("targetIndex", targetIndex)
+                    .toString();
+        } else {
+            return new ToStringBuilder(this)
+                    .add("targetName", name)
+                    .add("targetRole", role)
+                    .toString();
+        }
     }
 }
