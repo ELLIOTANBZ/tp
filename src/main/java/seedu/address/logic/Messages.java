@@ -46,7 +46,6 @@ public class Messages {
                 .append(person.getEmail())
                 .append("; Address: ")
                 .append(person.getAddress())
-                .append(person.getAddress())
                 .append("; Role: ")
                 .append(person.getRole())
                 .append("; Date: ")
