@@ -37,7 +37,8 @@ public class AddCommand extends Command {
             + "add n/Google p/00000000 e/google@gmail.com r/CEO d/2025-11-11";
 
     public static final String MESSAGE_SUCCESS = "New application added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This application already exists.";
+    public static final String MESSAGE_DUPLICATE_PERSON =
+            "This application already exists. Use /OverWrite to replace existing application";
     public static final String INVALID_DATE = "OOPS! Invalid date format, use the format (YYYY-MM-DD)";
 
 
