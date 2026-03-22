@@ -5,8 +5,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.model.person.exceptions.DuplicateApplicationException;
+import seedu.address.model.person.exceptions.DuplicateApplicationException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Application;
 
@@ -50,19 +51,5 @@ public class OverwriteCommand extends Command {
         DuplicateApplicationStore.clear();
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(replacementApplication)));
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof OverwriteCommand)) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -66,7 +66,7 @@ public class AddCommand extends Command {
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 
-    public Application geApplication() {
+    public Application getApplication() {
         return toAdd;
     }
 
