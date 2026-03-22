@@ -17,6 +17,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.OverwriteCommand;
 import seedu.address.logic.commands.StatusCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -54,34 +55,49 @@ public class AddressBookParser {
         // code.
         logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
 
+        Command command;
+
         switch (commandWord) {
 
         case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
+            command = new AddCommandParser().parse(arguments);
+            break;
 
         case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
+            command = new DeleteCommandParser().parse(arguments);
+            break;
 
         case StatusCommand.COMMAND_WORD:
-            return new StatusCommandParser().parse(arguments);
+            command = new StatusCommandParser().parse(arguments);
+            break;
 
         case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
+            command = new ClearCommand();
+            break;
 
         case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
+            command = new FindCommandParser().parse(arguments);
+            break;
 
         case ListCommand.COMMAND_WORD:
-            return new ListCommand();
+            command = new ListCommand();
+            break;
 
         case ExitCommand.COMMAND_WORD:
-            return new ExitCommand();
+            command = new ExitCommand();
+            break;
 
         case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
+            command = new HelpCommand();
+            break;
 
         case EditEnterCommand.COMMAND_WORD:
-            return new EditEnterCommandParser().parse(arguments);
+            command = new EditEnterCommandParser().parse(arguments);
+            break;
+
+        case OverwriteCommand.COMMAND_WORD:
+            command = new OverwriteCommand();
+            break;
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
