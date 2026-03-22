@@ -103,7 +103,7 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_notOverwriteCommand_clearDuplicateStore() {
+    public void parseCommand_notOverwriteCommand_clearDuplicateStore() throws Exception {
         Application application = new PersonBuilder().build();
         AddCommand addCommand = new AddCommand(application);
         DuplicateApplicationStore.setLastDuplicateApplication(addCommand);
@@ -116,9 +116,12 @@ public class AddressBookParserTest {
     }
 
     @Test
-    public void parseCommand_allNonOverwriteCommand_clearDuplicateStore() {
+    public void parseCommand_allNonOverwriteCommand_clearDuplicateStore() throws Exception {
         Application application = new PersonBuilder().build();
         AddCommand addCommand = new AddCommand(application);
+
+        String possibleAddCommand = "add n/Meta p/6505434800 e/facebook.careers@meta.com "
+                + "a/1 Hacker Way, Menlo Park, CA d/2024-03-19 r/Frontend Engineer s/interviewed t/tech";
 
         String[] nonOverwriteCommand = {
             ListCommand.COMMAND_WORD,
@@ -126,15 +129,15 @@ public class AddressBookParserTest {
             ExitCommand.COMMAND_WORD,
             HelpCommand.COMMAND_WORD,
             FindCommand.COMMAND_WORD + " test",
-            DeleteCommand.COMMAND_WORD + " 2",
-            AddCommand.COMMAND_WORD + " " + PersonUtil.getAddCommand(application)
+            DeleteCommand.COMMAND_WORD + " 1",
+            possibleAddCommand
         };
 
         for (int i = 0; i < nonOverwriteCommand.length; i++) {
             DuplicateApplicationStore.setLastDuplicateApplication(addCommand);
             assertTrue(DuplicateApplicationStore.hasLastDuplicateApplication());
 
-            parser.parseCommand(i);
+            parser.parseCommand(nonOverwriteCommand[i]);
 
             assertFalse(DuplicateApplicationStore.hasLastDuplicateApplication());
         }
