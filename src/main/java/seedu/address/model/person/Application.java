@@ -46,7 +46,24 @@ public class Application {
         this.tags.addAll(tags);
         this.address = address;
         this.status = status;
-        this.upcoming = new NoUpcoming();
+        this.upcoming = null;
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Application(Name name, Phone phone, Email email, Address address, Set<Tag> tags,
+                       Date date, Role role, Status status, Upcoming upcoming) {
+        requireAllNonNull(name, phone, email, role, tags, status, date, address);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.role = role;
+        this.date = date;
+        this.tags.addAll(tags);
+        this.address = address;
+        this.status = status;
+        this.upcoming = upcoming;
     }
 
     public Name getName() {
@@ -160,7 +177,7 @@ public class Application {
                 .add("address", address)
                 .add("status", status);
 
-        if (upcoming.hasUpcoming()) {
+        if (upcoming != null) {
             sb.add("event" , upcoming);
         }
         return sb.toString();

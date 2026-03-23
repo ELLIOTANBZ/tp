@@ -12,16 +12,6 @@ public class Upcoming {
     private final String eventName;
     private final Date eventDate;
 
-
-    /**
-     * Event with no deadlines.
-     * @param eventName event Description.
-     */
-    public Upcoming(String eventName) {
-        this.eventName = eventName;
-        this.eventDate = null;
-    }
-
     /**
      * Event with a deadline.
      * @param eventName event Description.
@@ -38,10 +28,6 @@ public class Upcoming {
 
     public Date getEventDate() {
         return eventDate;
-    }
-
-    public boolean hasUpcoming() {
-        return true;
     }
 
     @Override
