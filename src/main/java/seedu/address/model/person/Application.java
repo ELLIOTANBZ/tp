@@ -24,14 +24,13 @@ public class Application {
     private final Date date;
     private final Address address;
     private final Status status;
-    private final Event event;
+    private final Upcoming upcoming;
 
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
 
     //Internal field
     private boolean isBeingEdited = false;
-    private boolean hasUpcomingEvent = false;
 
     /**
      * Every field must be present and not null.
@@ -47,7 +46,7 @@ public class Application {
         this.tags.addAll(tags);
         this.address = address;
         this.status = status;
-        this.event = null;
+        this.upcoming = new NoUpcoming();
     }
 
     public Name getName() {
@@ -76,6 +75,10 @@ public class Application {
 
     public Status getStatus() {
         return status;
+    }
+
+    public Upcoming getUpcoming() {
+        return upcoming;
     }
 
     public boolean getEditingStatus() {
@@ -157,8 +160,8 @@ public class Application {
                 .add("address", address)
                 .add("status", status);
 
-        if (hasUpcomingEvent) {
-            sb.add("event" , event);
+        if (upcoming.hasUpcoming()) {
+            sb.add("event" , upcoming);
         }
         return sb.toString();
     }

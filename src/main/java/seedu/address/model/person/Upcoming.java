@@ -8,7 +8,7 @@ import seedu.address.commons.util.ToStringBuilder;
 /**
  * Event class to represent upcoming tasks of an application.
  */
-public class Event {
+public class Upcoming {
     private final String eventName;
     private final Date eventDate;
 
@@ -17,7 +17,7 @@ public class Event {
      * Event with no deadlines.
      * @param eventName event Description.
      */
-    public Event(String eventName) {
+    public Upcoming(String eventName) {
         this.eventName = eventName;
         this.eventDate = null;
     }
@@ -27,20 +27,22 @@ public class Event {
      * @param eventName event Description.
      * @param eventDate event date.
      */
-    public Event(String eventName, String eventDate) {
+    public Upcoming(String eventName, String eventDate) {
         this.eventName = eventName;
         this.eventDate = new Date(eventDate);
     }
 
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        return false;
+    public String getEventName() {
+        return eventName;
     }
 
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public boolean hasUpcoming() {
+        return true;
+    }
 
     @Override
     public int hashCode() {
@@ -51,7 +53,7 @@ public class Event {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("Event", eventName)
+                .add("Upcoming", eventName)
                 .add("Date", eventDate).toString();
     }
 
