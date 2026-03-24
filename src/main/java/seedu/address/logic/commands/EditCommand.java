@@ -106,7 +106,7 @@ public class EditCommand extends Command {
         Date updatedDate = editPersonDescriptor.getDate().orElse(personToEdit.getDate());
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Status updatedStatus = editPersonDescriptor.getStatus().orElse(personToEdit.getStatus());
-        Reminder updateReminder = editPersonDescriptor.getUpcoming().orElse(personToEdit.getReminder());
+        Reminder updateReminder = editPersonDescriptor.getReminder().orElse(personToEdit.getReminder());
 
         return new Application(updatedName, updatedPhone, updatedEmail, updatedAddress,
                 updatedTags, updatedDate, updatedRole, updatedStatus, updateReminder);
@@ -251,7 +251,7 @@ public class EditCommand extends Command {
             this.reminder = reminder;
         }
 
-        public Optional<Reminder> getUpcoming() {
+        public Optional<Reminder> getReminder() {
             return Optional.ofNullable(reminder);
         }
 

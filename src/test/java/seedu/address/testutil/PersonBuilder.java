@@ -37,7 +37,7 @@ public class PersonBuilder {
     private Date date;
     private Status status;
     private Reminder reminder;
-    private boolean hasUpcoming = false;
+    private boolean hasReminder = false;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -134,9 +134,9 @@ public class PersonBuilder {
     /**
      * Sets the {@code Email} of the {@code Person} that we are building.
      */
-    public PersonBuilder withUpcoming(String upcomingName, String upcomingDate) {
-        this.reminder = new Reminder(upcomingName, upcomingDate);
-        this.hasUpcoming = true;
+    public PersonBuilder withReminder(String reminderName, String reminderDate) {
+        this.reminder = new Reminder(reminderName, reminderDate);
+        this.hasReminder = true;
         return this;
     }
 
@@ -144,8 +144,8 @@ public class PersonBuilder {
         return new Application(name, phone, email, address, tags, date, role, status);
     }
 
-    // Not checking for Upcoming since used in test cases only.
-    public Application buildWithUpcoming() {
+    // Not checking for Reminder since used in test cases only.
+    public Application buildWithReminder() {
         return new Application(name, phone, email, address, tags, date, role, status, reminder);
     }
 

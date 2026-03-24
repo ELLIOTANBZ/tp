@@ -119,10 +119,10 @@ public class EditPersonDescriptorBuilder {
     /**
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code EditPersonDescriptor}
      * that we are building.
-     * BUT with upcoming attributes.
+     * BUT with reminder attributes.
      */
-    public EditPersonDescriptorBuilder withUpcoming(String upcomingName, String upcomingDate) {
-        descriptor.setReminder(new Reminder(upcomingName, upcomingDate));
+    public EditPersonDescriptorBuilder withReminder(String reminderName, String reminderDate) {
+        descriptor.setReminder(new Reminder(reminderName, reminderDate));
         return this;
     }
 

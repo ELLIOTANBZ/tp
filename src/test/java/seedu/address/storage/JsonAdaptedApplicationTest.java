@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.storage.JsonAdaptedApplication.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.BENSON_WITH_UPCOMING_INTERVIEW;
+import static seedu.address.testutil.TypicalPersons.BENSON_WITH_REMINDER_INTERVIEW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,8 +180,8 @@ public class JsonAdaptedApplicationTest {
     //for upcoming class
     @Test
     public void toModelType_validPersonWithUpcomingDetails_returnsPersonWithUpcoming() throws Exception {
-        JsonAdaptedApplication person = new JsonAdaptedApplication(BENSON_WITH_UPCOMING_INTERVIEW);
-        assertEquals(BENSON_WITH_UPCOMING_INTERVIEW, person.toModelType());
+        JsonAdaptedApplication person = new JsonAdaptedApplication(BENSON_WITH_REMINDER_INTERVIEW);
+        assertEquals(BENSON_WITH_REMINDER_INTERVIEW, person.toModelType());
     }
 
 

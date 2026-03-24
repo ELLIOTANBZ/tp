@@ -54,7 +54,7 @@ public class Messages {
                 .append(person.getStatus())
                 .append("; Tags: ")
                 .append(person.getReminder())
-                .append("; Upcoming: ");
+                .append("; Reminder: ");
         person.getTags().forEach(builder::append);
         return builder.toString();
     }

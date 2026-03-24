@@ -35,14 +35,14 @@ class JsonAdaptedApplication {
     private final String status;
     private final String role;
     private final String date;
-    private final String upcomingEvent;
-    private final String upcomingDate;
-    private Boolean hasUpcoming = false;
+    private final String reminderEvent;
+    private final String reminderDate;
+    private Boolean hasReminder = false;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
-     * Overloaded version of the constructor to support upcoming and not require much refactoring.
+     * Overloaded version of the constructor to support reminder and not require much refactoring.
      */
     @JsonCreator
     public JsonAdaptedApplication(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
@@ -51,8 +51,8 @@ class JsonAdaptedApplication {
                                   @JsonProperty("date") String date,
                                   @JsonProperty("role") String role,
                                   @JsonProperty("status") String status,
-                                  @JsonProperty("upcomingEvent") String upcomingEvent,
-                                  @JsonProperty("upcomingDate") String upcomingDate) {
+                                  @JsonProperty("reminderEvent") String reminderEvent,
+                                  @JsonProperty("reminderDate") String reminderDate) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -65,8 +65,8 @@ class JsonAdaptedApplication {
         this.status = status;
 
 
-        this.upcomingEvent = upcomingEvent;
-        this.upcomingDate = upcomingDate;
+        this.reminderEvent = reminderEvent;
+        this.reminderDate = reminderDate;
     }
 
     /**
@@ -84,9 +84,9 @@ class JsonAdaptedApplication {
         status = source.getStatus().value;
         role = source.getRole().value;
 
-        hasUpcoming = source.hasReminder();
-        upcomingEvent = hasUpcoming ? source.getReminder().getReminderName() : null;
-        upcomingDate = hasUpcoming ? source.getReminder().getReminderDate().value : null;
+        hasReminder = source.hasReminder();
+        reminderEvent = hasReminder ? source.getReminder().getReminderName() : null;
+        reminderDate = hasReminder ? source.getReminder().getReminderDate().value : null;
     }
 
     /**
@@ -158,17 +158,17 @@ class JsonAdaptedApplication {
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
 
-        if (hasUpcoming) {
-            if (upcomingEvent == null || upcomingDate == null) {
+        if (hasReminder) {
+            if (reminderEvent == null || reminderDate == null) {
                 throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                         Reminder.class.getSimpleName()));
             }
 
-            if (!Date.isValidDate(upcomingDate)) {
+            if (!Date.isValidDate(reminderDate)) {
                 throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
             }
 
-            final Reminder modelReminder = new Reminder(upcomingEvent, upcomingDate);
+            final Reminder modelReminder = new Reminder(reminderEvent, reminderDate);
 
             return new Application(modelName, modelPhone, modelEmail, modelAddress, modelTags,
                     modelDate, modelRole, modelStatus, modelReminder);
