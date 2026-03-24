@@ -131,7 +131,7 @@ OfferFlow by default does not allow duplicate application with same name and rol
 
 Overwrites pre-existing application in OfferFlow that has the same name and role, with the new application when you try to add an application with the same name and role as another already existing application
 
-![DuplicateApplication](images/Duplicate.png)
+![DuplicateApplication](images/DuplicateApplication.png)
 
 Format: `overwrite`
 
