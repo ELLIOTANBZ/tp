@@ -94,11 +94,11 @@ public class Application {
         return status;
     }
 
-    public Reminder getUpcoming() {
+    public Reminder getReminder() {
         return reminder;
     }
 
-    public boolean hasUpcoming() {
+    public boolean hasReminder() {
         return !(reminder == null);
     }
 

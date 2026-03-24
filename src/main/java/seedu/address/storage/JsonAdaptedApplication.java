@@ -84,9 +84,9 @@ class JsonAdaptedApplication {
         status = source.getStatus().value;
         role = source.getRole().value;
 
-        hasUpcoming = source.hasUpcoming();
-        upcomingEvent = hasUpcoming ? source.getUpcoming().getReminderName() : null;
-        upcomingDate = hasUpcoming ? source.getUpcoming().getReminderDate().value : null;
+        hasUpcoming = source.hasReminder();
+        upcomingEvent = hasUpcoming ? source.getReminder().getReminderName() : null;
+        upcomingDate = hasUpcoming ? source.getReminder().getReminderDate().value : null;
     }
 
     /**

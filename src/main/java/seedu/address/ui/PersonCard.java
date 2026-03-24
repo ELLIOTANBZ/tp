@@ -64,8 +64,8 @@ public class PersonCard extends UiPart<Region> {
         address.setText(person.getAddress().value);
         email.setText(person.getEmail().value);
         status.setText(person.getStatus().value);
-        if (person.hasUpcoming()) {
-            Reminder u = person.getUpcoming();
+        if (person.hasReminder()) {
+            Reminder u = person.getReminder();
             this.reminder.setVisible(true);
             String text = u.getReminderName();
             text += " - " + u.getReminderDate().value;

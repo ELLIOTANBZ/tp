@@ -44,7 +44,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setDate(person.getDate());
         descriptor.setRole(person.getRole());
         descriptor.setStatus(person.getStatus());
-        descriptor.setReminder(person.getUpcoming());
+        descriptor.setReminder(person.getReminder());
     }
 
     /**

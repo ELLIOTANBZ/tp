@@ -71,10 +71,10 @@ public class StatusCommand extends Command {
             throw new CommandException("Application not found.");
         }
 
-        if (target.hasUpcoming()) {
+        if (target.hasReminder()) {
             updatedApplication = new Application(target.getName(), target.getPhone(), target.getEmail(),
                     target.getAddress(), target.getTags(), target.getDate(), target.getRole(),
-                    status, target.getUpcoming());
+                    status, target.getReminder());
         } else {
             updatedApplication = new Application(target.getName(), target.getPhone(), target.getEmail(),
                     target.getAddress(), target.getTags(), target.getDate(), target.getRole(),
