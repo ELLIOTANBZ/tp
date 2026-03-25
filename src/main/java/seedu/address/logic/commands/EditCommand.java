@@ -56,8 +56,6 @@ public class EditCommand extends Command {
     public static final String MESSAGE_NO_APPLICATION_EDITED = "No application is marked for editing "
             + "- this is likely due to an internal error.";
 
-
-
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**

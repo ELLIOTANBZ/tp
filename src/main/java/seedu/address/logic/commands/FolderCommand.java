@@ -36,8 +36,17 @@ public class FolderCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) {
+        requireNonNull(model);
         String action = createNew ? "Created and switched to" : "Switched to";
         return new CommandResult(action + " folder: " + folderName, folderName, createNew);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof FolderCommand)) return false;
+        FolderCommand o = (FolderCommand) other;
+        return createNew == o.createNew && folderName.equals(o.folderName);
     }
 
 }
