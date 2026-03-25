@@ -53,6 +53,7 @@ public class Messages {
                 .append("; Status: ")
                 .append(person.getStatus())
                 .append("; Tags: ")
+                .append(person.getTags())
                 .append(person.getReminder())
                 .append("; Reminder: ");
         person.getTags().forEach(builder::append);
