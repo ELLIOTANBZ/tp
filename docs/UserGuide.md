@@ -303,6 +303,57 @@ Format: `delete n/NAME r/ROLE`
 
   ![Delete_ref](images/Delete_ref.png)
 
+### Creating a new address book : `folder`
+
+Creates a new empty address book saved under `data/FOLDER_NAME.json` and switches to it.
+
+Format: `folder FOLDER_NAME`
+
+#### Parameters
+- `FOLDER_NAME` → Name for the new address book (letters, numbers, underscores, and hyphens only)
+
+<box type="warning" seamless>
+
+**Caution:**
+- Folder name cannot be empty
+- Folder name cannot contain spaces or special characters (e.g. `@`, `.`)
+</box>
+
+#### Examples
+* `folder Y1S2` creates and switches to a new address book at `data/Y1S2.json`
+* `folder internships-2025` creates and switches to `data/internships-2025.json`
+
+#### Expected Outcome:
+- A new empty address book is created and you are switched to it immediately.
+
+---
+
+### Switching to an existing address book : `toggle`
+
+Switches to an existing address book saved under `data/FOLDER_NAME.json`.
+
+Format: `toggle FOLDER_NAME`
+
+#### Parameters
+- `FOLDER_NAME` → Name of the existing address book to switch to
+
+<box type="warning" seamless>
+
+**Caution:**
+- Folder name cannot be empty
+- Folder name cannot contain spaces or special characters
+- The address book file must already exist at `data/FOLDER_NAME.json`
+</box>
+
+#### Examples
+* `toggle Y1S2` switches to the address book at `data/Y1S2.json`
+* `toggle internships-2025` switches to `data/internships-2025.json`
+
+#### Expected Outcome:
+- You are switched to the specified address book and its applications are loaded.
+
+---
+
 ### Clearing all entries : `clear`
 
 ⚠️ Removes **ALL** applications. Use with caution.
@@ -371,5 +422,7 @@ Export past applications into different folder to declutter your active list.
 | **Status** | `status n/COMPANY r/ROLE s/STATUS` | `status n/Tiktok r/Data Analyst s/Rejected` |
 | **Find** | `find KEYWORD [MORE_KEYWORDS]` | `find James Jake` |
 | **Filter** | `/f /c /KEYWORD` or `/f /a /YYYY-MM-DD` or `/f /s /STATUS` or `/f /t /TAG` | `/f /c /Tiktok` or `/f /a /2024-06-18` or `/f /s /Rejected` or `/f /t /priority`|
+| **Folder** | `folder FOLDER_NAME` | `folder Y1S2` |
+| **Toggle** | `toggle FOLDER_NAME` | `toggle Y1S2` |
 | **List** | `list` | `list` |
 | **Help** | `help` | `help` |
