@@ -80,7 +80,7 @@ If you can type fast, OfferFlow will manage your internship pipeline faster than
 
 Shows you a message explaining how to access the help page.
 
-![help message](images/helpMessage.png)
+  ![help message](images/helpMessage.png)
 
 Format: `help`
 
@@ -112,13 +112,18 @@ Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS d/DATE r/ROLE s/STATUS [t/TAG]...�
 - `s/STATUS` → application progress
 - `t/TAGS` → optional fields
 
+Notes:
+* name and role is case insensitive
+* Email must use `@` symbol
+* Applied dates must use `YYYY-MM-DD`
+
 #### Examples:
 * `add n/Google p/96789012 e/google@gmail.com a/70 Pasir Panjang Rd, #03-71 d/2024-06-18 r/Backend Developer s/interviewed t/java`
 * `add n/Google p/12345678 e/careers@google.com a/123 Silicon Valley d/2025-06-01 r/Software Engineer s/pending`
 
 #### Expected Outcome:
 
-![Output](images/AddCommand.png)
+  ![Output](images/AddCommand.png)
 
 
 ### Overwrite duplicate application : `overwrite`
@@ -131,7 +136,7 @@ OfferFlow by default does not allow duplicate application with same name and rol
 
 Overwrites pre-existing application in OfferFlow that has the same name and role, with the new application when you try to add an application with the same name and role as another already existing application
 
-![DuplicateApplication](images/DuplicateApplication.png)
+  ![DuplicateApplication](images/DuplicateApplication.png)
 
 Format: `overwrite`
 
@@ -139,7 +144,7 @@ If you choose to overwrite, type `overwrite`. If not, continue using the app as 
 
 #### Expected Outcome (overwrite):
 
-![Overwrite](images/Overwrite.png)
+  ![Overwrite](images/Overwrite.png)
 
 
 ### Listing all internship applications : `list`
@@ -150,24 +155,39 @@ Format: `list`
 
 #### Expected Outcome:
 
-![List](images/List.png)
+  ![List](images/List.png)
 
-### Editing an application : `edit`
+### Editing an application : `editmode`
 
-Edits an existing application in OfferFlow.
+Edits an existing application in OfferFlow by entering editing mode with `editmode`
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format:
+1. `editmode INDEX` or `editmode n/NAME r/ROLE` to enter edit mode to edit that particular application
+2. possible editing commands
+    `n/NAME`
+    `r/ROLE`
+    `p/PHONE`
+    `e/EMAIL`
+    `a/ADDRESS`
+    `s/STATUS`
+    `d/DATE`
+    `t/TAG`
+3. `exitedit` to finish editing and exit the editing mode
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
+* Edits the application at the specified `INDEX`. The index refers to the index number shown in the displayed application list. The index **must be a positive integer** 1, 2, 3, … or specify a particular application using `NAME` and `ROLE`​
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
+* When editing tags, the existing tags of the application will be removed i.e adding of tags is not cumulative.
+* You can remove all the application’s tags by typing `t/` without
     specifying any tags after it.
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+### Examples:
+* `editmode 1` or `editmode n/Google r/Software Engineer`
+* `a/Mapletree Business City II, Pasir Panjang area`
+* `exitedit`
+
+### Expected outcome:
+
+  ![Edit](images/Edit.png)
 
 ### Modifying Reminders: `Reminder`
 
@@ -218,10 +238,7 @@ Format: `status n/COMPANY_NAME r/JOB_ROLE s/STATUS`
 
 #### Expected Outcome
 
-- If application exists → status is updated
-- If not found → error shown
-
-![UpdateStatus](images/Update_Status.png)
+  ![UpdateStatus](images/Update_Status.png)
 
 <box type="warning" seamless>
 
@@ -276,17 +293,28 @@ Format:
 * `/f /s /STATUS`
 * `/f /t /TAG`
 
+#### Parameters
+- `KEYWORD` → Name of the company
+- `YYYY-MM-DD` → date
+- `STATUS` → application progress
+- `TAG` → tags in the application
+
 Notes:
 * Filter matching is case-insensitive.
 * Leading and trailing spaces are ignored.
 * Internal spacing still matters.
 * Applied dates must use `YYYY-MM-DD`.
 
-Examples:
-* `/f /c /Google`
+### Examples
+* `/f /c /Amazon`
 * `/f /a /2025-11-11`
 * `/f /s /Applied`
 * `/f /t /java`
+
+#### Expected Outcome
+
+  ![Filter](images/Filter.png)
+
 
 ### Deleting an application : `delete`
 
@@ -388,9 +416,8 @@ Export past applications into different folder to declutter your active list.
 | **Add** | `add n/NAME p/PHONE e/EMAIL a/ADDRESS d/DATE r/ROLE s/STATUS [t/TAG]...` | `add n/Google p/96789012 e/google@gmail.com a/70 Pasir Panjang Rd, #03-71 d/2024-06-18 r/Backend Developer s/interviewed t/java` |
 | **Overwrite** | `overwrite` | `overwrite` |
 | **Clear** | `clear` | `clear` |
-| **Delete** | `delete INDEX` | `delete 3` |
-| **Delete** | `delete n/NAME r/ROLE` | `delete n/Google r/Backend Developer` |
-| **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` | `edit 2 n/James Lee e/jameslee@example.com` |
+| **Delete** | `delete INDEX` or `delete n/NAME r/ROLE` | `delete 3` or `delete n/Google r/Backend Developer` |
+| **Edit** | `editmode INDEX` or `editmode n/NAME r/ROLE` | `editmode 1` then `a/Mapletree Business City II, Pasir Panjang area` then `exitedit`  |
 | **Status** | `status n/COMPANY r/ROLE s/STATUS` | `status n/Tiktok r/Data Analyst s/Rejected` |
 | **Find** | `find KEYWORD [MORE_KEYWORDS]` | `find James Jake` |
 | **Filter** | `/f /c /KEYWORD` or `/f /a /YYYY-MM-DD` or `/f /s /STATUS` or `/f /t /TAG` | `/f /c /Tiktok` or `/f /a /2024-06-18` or `/f /s /Rejected` or `/f /t /priority`|
