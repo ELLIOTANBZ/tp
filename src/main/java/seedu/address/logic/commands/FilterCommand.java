@@ -15,8 +15,8 @@ public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " /c /<keyword>\n" + COMMAND_WORD
-                                    + " /a /<YYYY-MM-DD>\n" + COMMAND_WORD + " /s /<status>\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + " /n /<keyword>\n" + COMMAND_WORD
+                                    + " /d /<YYYY-MM-DD>\n" + COMMAND_WORD + " /s /<status>\n"
                                     + COMMAND_WORD + " /t /<tag>";
     public static final String MESSAGE_NO_MATCHES = "No matching applications found.";
     public static final String MESSAGE_MATCHES_FOUND = "Found %d matching application(s)";
