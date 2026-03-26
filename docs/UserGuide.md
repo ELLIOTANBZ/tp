@@ -1,5 +1,5 @@
 ---
-  layout: default.md
+layout: default.md
   title: "User Guide"
   pageNav: 3
 ---
@@ -18,13 +18,14 @@ Hence, **OfferFlow** was built by CS students by CS students as we understand th
 If you can type fast, OfferFlow will manage your internship pipeline faster than any GUI-focused application!
 
 <!-- * Table of Contents -->
+
 <page-nav-print />
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
+1. Ensure you have Java `17` or above installed in your Computer.`<br>`
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 1. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103T-F10-4/tp/releases).
@@ -34,47 +35,36 @@ If you can type fast, OfferFlow will manage your internship pipeline faster than
 1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar OfferFlow.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
-
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.`<br>`
    Some example commands you can try:
 
    * `list` : Lists all internship applications.
-
    * `add n/Google p/96789012 e/google@gmail.com a/70 Pasir Panjang Rd, #03-71 d/2024-06-18 r/Backend Developer s/interviewed t/java` : Adds your internship application to Offerflow.
-
    * `delete 3` : Deletes the 3rd contact shown in the current list.
-
    * `clear` : Deletes all applications.
-
    * `exit` : Exits the app.
+6. Refer to the [Features](#features) below for details of each command.
 
-1. Refer to the [Features](#features) below for details of each command.
-
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## Features
 
 <box type="info" seamless>
 
-**Notes about the command format:**<br>
+**Notes about the command format:**`<br>`
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
+* Words in `UPPER_CASE` are the parameters to be supplied by the user.`<br>`
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/Google`.
-
-* Items in square brackets are optional.<br>
+* Items in square brackets are optional.`<br>`
   e.g `n/NAME [t/TAG]` can be used as `n/Google t/java` or as `n/Google`.
-
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/java`, `t/java t/React` etc.
-
-* Parameters can be in any order.<br>
+* Items with `…` after them can be used multiple times including zero times.`<br>`
+  e.g. `[t/TAG]…` can be used as ` ` (i.e. 0 times), `t/java`, `t/java t/React` etc.
+* Parameters can be in any order.`<br>`
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
-
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.`<br>`
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
-
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
-</box>
+  `</box>`
 
 ### Viewing help : `help`
 
@@ -95,7 +85,7 @@ Adds the internship application you have applied for, to help you keep track of 
 OfferFlow by default does not allow duplicate application with same name and role. Hence, if you choose to add application with duplicate name and role, you can choose whether or not to [overwrite](#overwrite-duplicate-application--overwrite) it (ie: replace the pre-existing application with the new application)
 </box>
 
-Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS d/DATE r/ROLE s/STATUS [t/TAG]...​`
+Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS d/DATE r/ROLE s/STATUS [t/TAG]...`
 
 <box type="tip" seamless>
 
@@ -119,7 +109,7 @@ Notes:
 
 #### Examples:
 * `add n/Google p/96789012 e/google@gmail.com a/70 Pasir Panjang Rd, #03-71 d/2024-06-18 r/Backend Developer s/interviewed t/java`
-* `add n/Google p/12345678 e/careers@google.com a/123 Silicon Valley d/2025-06-01 r/Software Engineer s/pending`
+* `add n/Google p/12345678 e/careers@google.com a/123 qSilicon Valley d/2025-06-01 r/Software Engineer s/pending`
 
 #### Expected Outcome:
 
@@ -159,6 +149,19 @@ Format: `list`
 
 ### Editing an application : `editmode`
 
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…`
+
+* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values.
+* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
+* You can remove all the person’s tags by typing `t/` without
+  specifying any tags after it.
+
+Examples:
+
+* `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+* `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 Edits an existing application in OfferFlow by entering editing mode with `editmode`
 
 Format:
@@ -220,6 +223,7 @@ Format: `status n/COMPANY_NAME r/JOB_ROLE s/STATUS`
 </box>
 
 #### Parameters
+
 - `n/COMPANY_NAME` → Name of the company
 - `r/JOB_ROLE` → Role applied for (must match exactly)
 - `s/STATUS` → New status
@@ -234,6 +238,7 @@ Format: `status n/COMPANY_NAME r/JOB_ROLE s/STATUS`
 | **Offered** | 🎉 You got the offer! |
 
 #### Examples
+
 * `status n/Tiktok r/Data Analyst s/Applied`
 * `status n/Google r/Software Engineer s/Interviewing`
 * `status n/Meta r/ML Engineer s/Rejected`
@@ -356,6 +361,57 @@ Format: `delete n/NAME r/ROLE`
 
   ![Delete_ref](images/Delete_ref.png)
 
+### Creating a new address book : `folder`
+
+Creates a new empty address book saved under `data/FOLDER_NAME.json` and switches to it.
+
+Format: `folder FOLDER_NAME`
+
+#### Parameters
+- `FOLDER_NAME` → Name for the new address book (letters, numbers, underscores, and hyphens only)
+
+<box type="warning" seamless>
+
+**Caution:**
+- Folder name cannot be empty
+- Folder name cannot contain spaces or special characters (e.g. `@`, `.`)
+</box>
+
+#### Examples
+* `folder Y1S2` creates and switches to a new address book at `data/Y1S2.json`
+* `folder internships-2025` creates and switches to `data/internships-2025.json`
+
+#### Expected Outcome:
+- A new empty address book is created and you are switched to it immediately.
+
+---
+
+### Switching to an existing address book : `toggle`
+
+Switches to an existing address book saved under `data/FOLDER_NAME.json`.
+
+Format: `toggle FOLDER_NAME`
+
+#### Parameters
+- `FOLDER_NAME` → Name of the existing address book to switch to
+
+<box type="warning" seamless>
+
+**Caution:**
+- Folder name cannot be empty
+- Folder name cannot contain spaces or special characters
+- The address book file must already exist at `data/FOLDER_NAME.json`
+</box>
+
+#### Examples
+* `toggle Y1S2` switches to the address book at `data/Y1S2.json`
+* `toggle internships-2025` switches to `data/internships-2025.json`
+
+#### Expected Outcome:
+- You are switched to the specified address book and its applications are loaded.
+
+---
+
 ### Clearing all entries : `clear`
 
 ⚠️ Removes **ALL** applications. Use with caution.
@@ -389,21 +445,21 @@ Furthermore, certain edits can cause OfferFlow to behave in unexpected ways (e.g
 
 Export past applications into different folder to declutter your active list.
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous OfferFlow home folder.
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## Glossary
 
@@ -423,5 +479,7 @@ Export past applications into different folder to declutter your active list.
 | **Status** | `status n/COMPANY r/ROLE s/STATUS` | `status n/Tiktok r/Data Analyst s/Rejected` |
 | **Find** | `find KEYWORD [MORE_KEYWORDS]` | `find James Jake` |
 | **Filter** | `/f /c /KEYWORD` or `/f /a /YYYY-MM-DD` or `/f /s /STATUS` or `/f /t /TAG` | `/f /c /Tiktok` or `/f /a /2024-06-18` or `/f /s /Rejected` or `/f /t /priority`|
+| **Folder** | `folder FOLDER_NAME` | `folder Y1S2` |
+| **Toggle** | `toggle FOLDER_NAME` | `toggle Y1S2` |
 | **List** | `list` | `list` |
 | **Help** | `help` | `help` |

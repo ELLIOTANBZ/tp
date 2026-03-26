@@ -17,6 +17,7 @@ import seedu.address.logic.commands.EditEnterCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.FolderCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.OverwriteCommand;
@@ -107,6 +108,12 @@ public class AddressBookParser {
         case OverwriteCommand.COMMAND_WORD:
             command = new OverwriteCommand();
             break;
+
+        case FolderCommand.COMMAND_WORD_FOLDER:
+            return new FolderCommandParser(true).parse(arguments);
+
+        case FolderCommand.COMMAND_WORD_TOGGLE:
+            return new FolderCommandParser(false).parse(arguments);
 
         case RemoveReminderCommand.COMMAND_WORD:
             return new RemoveReminderCommandParser().parse(arguments);
