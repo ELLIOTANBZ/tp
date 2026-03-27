@@ -59,13 +59,25 @@ public class AddCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        checkForDuplicate(model);
+        model.addPerson(toAdd);
+        clearStoredDuplicate();
+
+        return successResult();
+    }
+
+    private void checkForDuplicate(Model model) throws CommandException {
         if (model.hasPerson(toAdd)) {
             DuplicateApplicationStore.setLastDuplicateApplication(this);
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
+    }
 
-        model.addPerson(toAdd);
+    private void clearStoredDuplicate() {
         DuplicateApplicationStore.clear();
+    }
+
+    private CommandResult successResult() {
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 
