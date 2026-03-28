@@ -35,10 +35,14 @@ public class EmailTest {
 
         // invalid parts
         assertFalse(Email.isValidEmail("peterjack@-")); // invalid domain name
-        assertFalse(Email.isValidEmail("peterjack@exam_ple.com")); // underscore in domain name (equivalence paritioning)
-        assertFalse(Email.isValidEmail("peter jack@example.com")); // spaces in local part (equivalence paritioning)
-        assertFalse(Email.isValidEmail("peterjack@exam ple.com")); // spaces in domain name (equivalence paritioning)
-        assertFalse(Email.isValidEmail(" peterjack@example.com")); // leading space (equivalence paritioning)
+        // underscore in domain name (equivalence paritioning)
+        assertFalse(Email.isValidEmail("peterjack@exam_ple.com"));
+        // spaces in local part (equivalence paritioning)
+        assertFalse(Email.isValidEmail("peter jack@example.com"));
+        // spaces in domain name (equivalence paritioning)
+        assertFalse(Email.isValidEmail("peterjack@exam ple.com"));
+        // leading space (equivalence paritioning)
+        assertFalse(Email.isValidEmail(" peterjack@example.com"));
         assertFalse(Email.isValidEmail("peterjack@example.com ")); // trailing space (equivalence paritioning)
         assertFalse(Email.isValidEmail("peterjack@@example.com")); // double '@' symbol (equivalence paritioning)
         assertFalse(Email.isValidEmail("peter@jack@example.com")); // '@' symbol in local part (equivalence paritioning)

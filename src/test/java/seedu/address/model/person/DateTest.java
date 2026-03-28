@@ -37,7 +37,8 @@ public class DateTest {
 
         assertFalse(Date.isValidDate("as")); // letters not allowed (equivalence paritioning)
         assertFalse(Date.isValidDate("2025-")); // not YYYY-MM-DD (equivalence paritioning)
-        assertFalse(Date.isValidDate("2026-13-12"));  // month between only 1 to 12 (equivalence paritioning)
+        // month between//only 1 to 12 (equivalence paritioning)
+        assertFalse(Date.isValidDate("2026-13-12"));
         assertFalse(Date.isValidDate("2026-12-1")); // day should be 2 digits (equivalence paritioning)
         assertFalse(Date.isValidDate("2026-12-")); // not YYYY-MM-DD (equivalence paritioning)
         assertFalse(Date.isValidDate("2026/12/12")); // wrong format (/) (equivalence paritioning)
