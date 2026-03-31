@@ -37,7 +37,7 @@ public class Application {
      */
     public Application(Name name, Phone phone, Email email, Address address, Set<Tag> tags,
                 Date date, Role role, Status status) {
-        requireAllNonNull(name, phone, email, role, tags, status, date, address);
+//        requireAllNonNull(name, phone, email, role, tags, status, date, address);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -54,7 +54,7 @@ public class Application {
      */
     public Application(Name name, Phone phone, Email email, Address address, Set<Tag> tags,
                        Date date, Role role, Status status, Reminder reminder) {
-        requireAllNonNull(name, phone, email, role, tags, status, date, address);
+//        requireAllNonNull(name, phone, email, role, tags, status, date, address);
         this.name = name;
         this.phone = phone;
         this.email = email;
