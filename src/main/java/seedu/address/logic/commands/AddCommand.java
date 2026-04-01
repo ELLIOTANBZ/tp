@@ -71,7 +71,7 @@ public class AddCommand extends Command {
         model.addPerson(toAdd);
         clearStoredDuplicate();
 
-        assert !model.hasPerson(toAdd) : "should have flagged duplicate";
+        assert model.hasPerson(toAdd) : "failed to add application to model";
         logger.info("New application added: " + toAdd);
         return successResult();
     }
