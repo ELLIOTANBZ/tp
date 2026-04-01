@@ -55,9 +55,15 @@ public class AddCommandParser implements Parser<AddCommand> {
     }
 
     private Application buildApplication(ArgumentMultimap argMultimap) throws ParseException {
-        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-        Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        Name name = parseName(argMultimap);
+        Role role = parseRole(argMultimap);
+        Set<Tag> tagList = parseTags(argMultimap);
+        Phone phone = parsePhone(argMultimap);
+        Email email = parseEmail(argMultimap);
+        Address address = parseAddress(argMultimap);
+        Date date = parseDate(argMultimap);
+        Status status = parseStatus(argMultimap);
+        Reminder reminder = parseReminder(argMultimap);
 
         Phone phone = arePrefixesPresent(argMultimap, PREFIX_PHONE)
                 ? ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get())
