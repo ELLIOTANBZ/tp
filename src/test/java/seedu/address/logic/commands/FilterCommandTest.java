@@ -9,12 +9,14 @@ import static seedu.address.testutil.TypicalPersons.BENSON_WITH_REMINDER_INTERVI
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.ApplicationMatchesAllPredicate;
 import seedu.address.model.person.CompanyContainsKeywordPredicate;
 import seedu.address.model.person.DateMatchesPredicate;
 import seedu.address.model.person.StatusMatchesPredicate;
@@ -75,6 +77,18 @@ public class FilterCommandTest {
     @Test
     public void execute_tag_singleMatchFound() {
         TagMatchesPredicate predicate = new TagMatchesPredicate("owesMoney");
+        FilterCommand command = new FilterCommand(predicate);
+
+        expectedModel.updateFilteredPersonList(predicate);
+        assertCommandSuccess(command, model, String.format(FilterCommand.MESSAGE_MATCHES_FOUND, 1), expectedModel);
+        assertEquals(Collections.singletonList(BENSON_WITH_REMINDER_INTERVIEW), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_multipleFilters_singleMatchFound() {
+        ApplicationMatchesAllPredicate predicate = new ApplicationMatchesAllPredicate(List.of(
+                new StatusMatchesPredicate("applied"),
+                new DateMatchesPredicate("2024-02-20")));
         FilterCommand command = new FilterCommand(predicate);
 
         expectedModel.updateFilteredPersonList(predicate);

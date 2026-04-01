@@ -1,17 +1,25 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Application;
+import seedu.address.model.person.ApplicationMatchesAllPredicate;
 import seedu.address.model.person.CompanyContainsKeywordPredicate;
 import seedu.address.model.person.DateMatchesPredicate;
 import seedu.address.model.person.StatusMatchesPredicate;
 import seedu.address.model.person.TagMatchesPredicate;
+import seedu.address.model.person.Date;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -19,83 +27,117 @@ import seedu.address.model.tag.Tag;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
-    public static final String MESSAGE_UNKNOWN_FILTER_COMMAND = "Sorry I don't understand";
-    public static final String MESSAGE_UNKNOWN_FILTER_TYPE =
-            "OOPS! Unknown filter type. Use n, d, s, or t.";
     public static final String MESSAGE_INVALID_DATE_FORMAT = "Invalid date format. Use YYYY-MM-DD.";
+    public static final String MESSAGE_INVALID_DATE = "Invalid date given.";
     public static final String MESSAGE_INVALID_COMPANY_FORMAT =
-            "OOPS! Invalid format, use format: filter /n /<keyword>";
+            "OOPS! Invalid format, use format: filter n/<keyword>";
     public static final String MESSAGE_INVALID_APPLIED_FORMAT =
-            "OOPS! Invalid format, use format: filter /d /<YYYY-MM-DD>";
+            "OOPS! Invalid format, use format: filter d/<YYYY-MM-DD>";
     public static final String MESSAGE_INVALID_STATUS_FORMAT =
-            "OOPS! Invalid format, use format: filter /s /<status>";
+            "OOPS! Invalid format, use format: filter s/<status>";
     public static final String MESSAGE_INVALID_TAG_FORMAT =
-            "OOPS! Invalid format, use format: filter /t /<tag>";
+            "OOPS! Invalid format, use format: filter t/<tag>";
+    public static final String MESSAGE_MULTIPLE_COMPANY_KEYWORDS =
+            "Please filter by only 1 company name.";
+    public static final String MESSAGE_MULTIPLE_DATES =
+            "Please filter by only 1 date.";
+    public static final String MESSAGE_MULTIPLE_STATUSES =
+            "Please filter by only 1 status.";
     public static final String MESSAGE_MULTIPLE_TAGS =
             "Please filter by only 1 tag.";
-
-    private static final Pattern FILTER_ARGUMENTS_FORMAT = Pattern.compile("^/(?<type>\\S+)(?<value>.*)$");
+    private static final String DATE_SHAPE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
 
     @Override
     public FilterCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        String trimmedArgs = args.trim();
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_DATE, PREFIX_STATUS, PREFIX_TAG);
 
-        if (trimmedArgs.isEmpty()) {
-            throw new ParseException(MESSAGE_UNKNOWN_FILTER_COMMAND);
+        validateArguments(argMultimap);
+
+        List<Predicate<Application>> predicates = new ArrayList<>();
+        addCompanyPredicate(argMultimap, predicates);
+        addDatePredicate(argMultimap, predicates);
+        addStatusPredicate(argMultimap, predicates);
+        addTagPredicate(argMultimap, predicates);
+
+        return new FilterCommand(new ApplicationMatchesAllPredicate(predicates));
+    }
+
+    private void validateArguments(ArgumentMultimap argMultimap) throws ParseException {
+        if (argMultimap.getPreamble().startsWith("/")) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
-        Matcher matcher = FILTER_ARGUMENTS_FORMAT.matcher(trimmedArgs);
-        if (!matcher.matches()) {
-            throw new ParseException(MESSAGE_UNKNOWN_FILTER_COMMAND);
+        if (!argMultimap.getPreamble().isEmpty() || !hasAnySupportedPrefix(argMultimap)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
-        String filterType = matcher.group("type").toLowerCase(Locale.ROOT);
-        String rawValue = matcher.group("value").trim();
-
-        switch (filterType) {
-        case "n":
-            return parseCompanyFilter(rawValue);
-        case "d":
-            return parseAppliedFilter(rawValue);
-        case "s":
-            return parseStatusFilter(rawValue);
-        case "t":
-            return parseTagFilter(rawValue);
-        default:
-            throw new ParseException(MESSAGE_UNKNOWN_FILTER_TYPE);
+        if (argMultimap.getAllValues(PREFIX_NAME).size() > 1) {
+            throw new ParseException(MESSAGE_MULTIPLE_COMPANY_KEYWORDS);
+        }
+        if (argMultimap.getAllValues(PREFIX_DATE).size() > 1) {
+            throw new ParseException(MESSAGE_MULTIPLE_DATES);
+        }
+        if (argMultimap.getAllValues(PREFIX_STATUS).size() > 1) {
+            throw new ParseException(MESSAGE_MULTIPLE_STATUSES);
+        }
+        if (argMultimap.getAllValues(PREFIX_TAG).size() > 1) {
+            throw new ParseException(MESSAGE_MULTIPLE_TAGS);
         }
     }
 
-    private FilterCommand parseCompanyFilter(String rawValue) throws ParseException {
-        String companyKeyword = extractValue(rawValue);
+    private void addCompanyPredicate(ArgumentMultimap argMultimap, List<Predicate<Application>> predicates)
+            throws ParseException {
+        if (argMultimap.getValue(PREFIX_NAME).isEmpty()) {
+            return;
+        }
+
+        String companyKeyword = argMultimap.getValue(PREFIX_NAME).get().trim();
         if (companyKeyword.isEmpty()) {
             throw new ParseException(MESSAGE_INVALID_COMPANY_FORMAT);
         }
-        return new FilterCommand(new CompanyContainsKeywordPredicate(companyKeyword));
+        predicates.add(new CompanyContainsKeywordPredicate(companyKeyword));
     }
 
-    private FilterCommand parseAppliedFilter(String rawValue) throws ParseException {
-        String appliedDate = extractValue(rawValue);
+    private void addDatePredicate(ArgumentMultimap argMultimap, List<Predicate<Application>> predicates)
+            throws ParseException {
+        if (argMultimap.getValue(PREFIX_DATE).isEmpty()) {
+            return;
+        }
+
+        String appliedDate = argMultimap.getValue(PREFIX_DATE).get().trim();
         if (appliedDate.isEmpty()) {
             throw new ParseException(MESSAGE_INVALID_APPLIED_FORMAT);
         }
-        if (!ParserUtil.isParsableDate(appliedDate)) {
+        if (!appliedDate.matches(DATE_SHAPE_REGEX)) {
             throw new ParseException(MESSAGE_INVALID_DATE_FORMAT);
         }
-        return new FilterCommand(new DateMatchesPredicate(appliedDate));
+        if (!Date.isValidDate(appliedDate)) {
+            throw new ParseException(MESSAGE_INVALID_DATE);
+        }
+        predicates.add(new DateMatchesPredicate(appliedDate));
     }
 
-    private FilterCommand parseStatusFilter(String rawValue) throws ParseException {
-        String status = extractValue(rawValue);
+    private void addStatusPredicate(ArgumentMultimap argMultimap, List<Predicate<Application>> predicates)
+            throws ParseException {
+        if (argMultimap.getValue(PREFIX_STATUS).isEmpty()) {
+            return;
+        }
+
+        String status = argMultimap.getValue(PREFIX_STATUS).get().trim();
         if (status.isEmpty()) {
             throw new ParseException(MESSAGE_INVALID_STATUS_FORMAT);
         }
-        return new FilterCommand(new StatusMatchesPredicate(status));
+        predicates.add(new StatusMatchesPredicate(status));
     }
 
-    private FilterCommand parseTagFilter(String rawValue) throws ParseException {
-        String tag = extractValue(rawValue);
+    private void addTagPredicate(ArgumentMultimap argMultimap, List<Predicate<Application>> predicates)
+            throws ParseException {
+        if (argMultimap.getValue(PREFIX_TAG).isEmpty()) {
+            return;
+        }
+
+        String tag = argMultimap.getValue(PREFIX_TAG).get().trim();
         if (tag.isEmpty()) {
             throw new ParseException(MESSAGE_INVALID_TAG_FORMAT);
         }
@@ -105,18 +147,13 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         if (!Tag.isValidTagName(tag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
-        return new FilterCommand(new TagMatchesPredicate(tag));
+        predicates.add(new TagMatchesPredicate(tag));
     }
 
-    private String extractValue(String rawValue) {
-        if (rawValue.isEmpty()) {
-            return "";
-        }
-
-        if (rawValue.startsWith("/")) {
-            return rawValue.substring(1).trim();
-        }
-
-        return rawValue.trim();
+    private boolean hasAnySupportedPrefix(ArgumentMultimap argMultimap) {
+        return argMultimap.getValue(PREFIX_NAME).isPresent()
+                || argMultimap.getValue(PREFIX_DATE).isPresent()
+                || argMultimap.getValue(PREFIX_STATUS).isPresent()
+                || argMultimap.getValue(PREFIX_TAG).isPresent();
     }
 }

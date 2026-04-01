@@ -26,9 +26,12 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.OverwriteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Application;
+import seedu.address.model.person.ApplicationMatchesAllPredicate;
 import seedu.address.model.person.CompanyContainsKeywordPredicate;
 import seedu.address.model.person.DuplicateApplicationStore;
+import seedu.address.model.person.DateMatchesPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.StatusMatchesPredicate;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 
@@ -77,8 +80,17 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_filter() throws Exception {
-        FilterCommand command = (FilterCommand) parser.parseCommand("FILTER /N /Amy");
-        assertEquals(new FilterCommand(new CompanyContainsKeywordPredicate("Amy")), command);
+        FilterCommand command = (FilterCommand) parser.parseCommand("FILTER n/Amy s/applied");
+        assertEquals(new FilterCommand(new ApplicationMatchesAllPredicate(List.of(
+                new CompanyContainsKeywordPredicate("Amy"),
+                new StatusMatchesPredicate("applied")))), command);
+    }
+
+    @Test
+    public void parseCommand_filterWithSlashSuffix_throwsParseException() {
+        assertThrows(ParseException.class,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE),
+                () -> parser.parseCommand("filter/"));
     }
 
     @Test
@@ -137,7 +149,7 @@ public class AddressBookParserTest {
             ExitCommand.COMMAND_WORD,
             HelpCommand.COMMAND_WORD,
             FindCommand.COMMAND_WORD + " test",
-            FilterCommand.COMMAND_WORD + " /n /test",
+            FilterCommand.COMMAND_WORD + " n/test",
             DeleteCommand.COMMAND_WORD + " 1",
             possibleAddCommand
         };
