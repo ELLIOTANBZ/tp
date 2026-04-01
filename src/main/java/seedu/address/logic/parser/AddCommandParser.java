@@ -13,8 +13,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -33,15 +35,15 @@ import seedu.address.model.tag.Tag;
  */
 public class AddCommandParser implements Parser<AddCommand> {
 
+    private static final Logger logger = LogsCenter.getLogger(AddCommandParser.class);
+
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TAG, PREFIX_ROLE, PREFIX_STATUS, PREFIX_DATE, PREFIX_REMINDER, PREFIX_REMINDER_DATE);
+        ArgumentMultimap argMultimap = tokenizeArguments(args);
         validatePrefixes(argMultimap);
 
         try {
@@ -65,25 +67,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         Status status = parseStatus(argMultimap);
         Reminder reminder = parseReminder(argMultimap);
 
-        Phone phone = arePrefixesPresent(argMultimap, PREFIX_PHONE)
-                ? ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get())
-                : null;
-        Email email = arePrefixesPresent(argMultimap, PREFIX_EMAIL)
-                ? ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get())
-                : null;
-        Address address = arePrefixesPresent(argMultimap, PREFIX_ADDRESS)
-                ? ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get())
-                : null;
-        Date date = arePrefixesPresent(argMultimap, PREFIX_DATE)
-                ? ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE).get())
-                : null;
-        Status status = arePrefixesPresent(argMultimap, PREFIX_STATUS)
-                ? ParserUtil.parseStatus(argMultimap.getValue(PREFIX_STATUS).get())
-                : null;
-        Reminder reminder = arePrefixesPresent(argMultimap, PREFIX_REMINDER, PREFIX_REMINDER_DATE)
-                ? ParserUtil.parseReminder(argMultimap.getValue(PREFIX_REMINDER).get(),
-                            argMultimap.getValue(PREFIX_REMINDER_DATE).get())
-                : null;
+        assert name != null : "company name should not be null";
+        assert role != null : "role should not be null";
+
         return new Application(name, phone, email, address, tagList, date, role, status, reminder);
     }
 
@@ -101,13 +87,16 @@ public class AddCommandParser implements Parser<AddCommand> {
     }
 
     /**
-     * Validates that the required prefixes are present and that there are no duplicate prefixes.
-     * @param argMultimap the ArgumentMultimap to validate
-     * @throws ParseException if the validation fails
+     * Validates that the required prefixes are present and that there are no duplicate prefixes
+     *
+     * @param argMultimap the ArgumentMultimap containing the parsed arguments
+     * @throws ParseException if the required prefixes are missing, if there are duplicate prefixes,
+     *          or if there is an unexpected preamble
      */
     private void validatePrefixes(ArgumentMultimap argMultimap) throws ParseException {
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ROLE)
                 || !argMultimap.getPreamble().isEmpty()) {
+            logger.warning("Missing required prefixes or unexpected preamble");
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
