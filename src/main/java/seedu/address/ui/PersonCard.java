@@ -16,8 +16,7 @@ import seedu.address.model.person.Reminder;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-
-    public static final String NONESTRING = "None";
+    private static final String NONESTRING = "None";
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -69,7 +68,7 @@ public class PersonCard extends UiPart<Region> {
         }
 
         if (person.getPhone() == null || person.getPhone().toString().isEmpty()) {
-            phone.setText("Contact: "  + NONESTRING);
+            phone.setText("Contact: " + NONESTRING);
         } else {
             phone.setText("Phone: " + person.getPhone().value);
         }
@@ -93,15 +92,6 @@ public class PersonCard extends UiPart<Region> {
         } else {
             status.setText(NONESTRING);
         }
-
-//        date.setText(person.getDate().toString());
-//        phone.setText(person.getPhone().value);
-//        address.setText(person.getAddress().value);
-//        email.setText(person.getEmail().value);
-//        status.setText(person.getStatus().value);
-//
-//        status.getStyleClass().removeIf(s -> s.startsWith("status-"));
-//        status.getStyleClass().add("status-" + person.getStatus().getStyleClass());
 
         if (person.hasReminder()) {
             Reminder u = person.getReminder();
