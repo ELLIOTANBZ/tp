@@ -55,6 +55,7 @@ public class AddressBookParser {
 
         final String commandWord = matcher.group("commandWord").toLowerCase(Locale.ROOT);
         final String arguments = matcher.group("arguments");
+        final String normalizedFilterArguments = getNormalizedFilterArguments(commandWord, arguments);
 
         // Note to developers: Change the log level in config.json to enable
         // lower level (i.e., FINE, FINER and lower)
@@ -129,6 +130,10 @@ public class AddressBookParser {
             break;
 
         default:
+            if (normalizedFilterArguments != null) {
+                command = new FilterCommandParser().parse(normalizedFilterArguments);
+                break;
+            }
             logger.finer("This user input caused a ParseException: " + userInput);
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -139,5 +144,13 @@ public class AddressBookParser {
             }
         }
         return command;
+    }
+
+    private String getNormalizedFilterArguments(String commandWord, String arguments) {
+        if (!commandWord.startsWith(FilterCommand.COMMAND_WORD + "/")) {
+            return null;
+        }
+
+        return commandWord.substring(FilterCommand.COMMAND_WORD.length()) + arguments;
     }
 }

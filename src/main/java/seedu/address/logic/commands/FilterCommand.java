@@ -15,9 +15,14 @@ public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + " /n /<keyword>\n" + COMMAND_WORD
-                                    + " /d /<YYYY-MM-DD>\n" + COMMAND_WORD + " /s /<status>\n"
-                                    + COMMAND_WORD + " /t /<tag>";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters applications by one or more fields.\n"
+                                    + "Parameters: [n/KEYWORD] [d/YYYY-MM-DD] [r/ROLE] [s/STATUS] [t/TAG]\n"
+                                    + "Examples:\n"
+                                    + COMMAND_WORD + " n/Google\n"
+                                    + COMMAND_WORD + " d/2024-12-12\n"
+                                    + COMMAND_WORD + " r/Software Engineer\n"
+                                    + COMMAND_WORD + " s/applied d/2024-12-12\n"
+                                    + COMMAND_WORD + " n/Google t/internship";
     public static final String MESSAGE_NO_MATCHES = "No matching applications found.";
     public static final String MESSAGE_MATCHES_FOUND = "Found %d matching application(s)";
 
