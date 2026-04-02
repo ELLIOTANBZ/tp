@@ -95,14 +95,20 @@ public class EditCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Application createEditedPerson(Application personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Application createEditedPerson(Application personToEdit,
+                                                  EditPersonDescriptor editPersonDescriptor) throws CommandException {
         assert personToEdit != null;
+        boolean isFutureDate = editPersonDescriptor.getDate().map(x -> !x.checkNotFutureDate()).orElse(false);
+        if (isFutureDate) {
+            throw new CommandException(MESSAGE_DATE_NOT_ALLOWED);
+        }
+
+        Date updatedDate = editPersonDescriptor.getDate().orElse(personToEdit.getDate());
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-        Date updatedDate = editPersonDescriptor.getDate().orElse(personToEdit.getDate());
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Status updatedStatus = editPersonDescriptor.getStatus().orElse(personToEdit.getStatus());
         Reminder updateReminder = editPersonDescriptor.getReminder().orElse(personToEdit.getReminder());
