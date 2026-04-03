@@ -35,6 +35,7 @@ public class RemoveReminderCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
+
     @Test
     public void execute_validIndexUnfilteredList_success() {
         Application personToRemoveReminder = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
@@ -43,7 +44,7 @@ public class RemoveReminderCommandTest {
         Application bensonWithoutReminder = new PersonBuilder(BENSON).build();
 
         String expectedMessage = String.format(RemoveReminderCommand.MESSAGE_REMOVE_REMINDER_SUCCESS,
-                Messages.format(bensonWithoutReminder)); // <-- use bensonWithoutReminder, not personToRemoveReminder
+                Messages.format(bensonWithoutReminder));
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(personToRemoveReminder, bensonWithoutReminder);
@@ -89,7 +90,7 @@ public class RemoveReminderCommandTest {
     }
 
     @Test
-    public void execute_normalremoveReminderNoTarget_throwsCommandException() {
+    public void execute_normalRemoveReminderNoTarget_throwsCommandException() {
         RemoveReminderCommand removeReminderCommand =
                 new RemoveReminderCommand(new Name("NonExistentName"), new Role("Engineer"));
         assertCommandFailure(removeReminderCommand, model, Messages.MESSAGE_INVALID_APPLICATION_IDENTIFIER);
@@ -120,6 +121,7 @@ public class RemoveReminderCommandTest {
 
         RemoveReminderCommand removeReminderFirstCommandAppCopy =
                 new RemoveReminderCommand(BOB.getName(), BOB.getRole());
+
         assertTrue(removeReminderFirstCommandApp.equals(removeReminderFirstCommandApp));
         assertTrue(removeReminderFirstCommandApp.equals(removeReminderFirstCommandAppCopy));
         assertFalse(removeReminderFirstCommandApp.equals(1));

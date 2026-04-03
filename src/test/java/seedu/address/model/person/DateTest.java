@@ -18,11 +18,11 @@ public class DateTest {
 
     @Test
     public void constructor_invalidDate_throwsIllegalArgumentException() {
-        String invalidDate1 = ""; // empty date (equivalence paritioning)
+        String invalidDate1 = ""; // Empty date is now considered valid! skipped.
         String invalidDate2 = "avs"; // letters not allowed (equivalence paritioning)
         String invalidDate3 = "2025"; // not YYYY-MM-DD (equivalence paritioning)
         String invalidDate4 = "2026-13-12"; // month between only 1 to 12 (equivalence paritioning)
-        //        assertThrows(IllegalArgumentException.class, () -> new Date(invalidDate1));
+
         assertThrows(IllegalArgumentException.class, () -> new Date(invalidDate2));
         assertThrows(IllegalArgumentException.class, () -> new Date(invalidDate3));
         assertThrows(IllegalArgumentException.class, () -> new Date(invalidDate4));

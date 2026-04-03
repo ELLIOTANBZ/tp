@@ -17,7 +17,7 @@ import seedu.address.model.person.Reminder;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-    private static final String NONESTRING = "None";
+    private static final String NONE_STRING = "None";
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -59,43 +59,51 @@ public class PersonCard extends UiPart<Region> {
     public PersonCard(Application person, int displayedIndex) {
         super(FXML);
         this.person = person;
+        setBasicInfo(displayedIndex);
+        setContactInfo();
+        setStatusInfo();
+        setReminderInfo();
+        setTags();
+    }
+
+    /**
+     * Sets Index, Name, Role and Date of Application.
+     *
+     * @param displayedIndex Index of Application.
+     */
+    private void setBasicInfo(int displayedIndex) {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         role.setText(" - " + person.getRole().value + "  ");
+        date.setText("Date: " + (person.getDate() != null ? person.getDate().toString() : NONE_STRING));
+    }
 
+    /**
+     * Sets Phone, Email and Address of Application.
+     */
+    private void setContactInfo() {
+        phone.setText("Phone: " + (person.getPhone() != null ? person.getPhone().value : NONE_STRING));
+        address.setText("Address: " + (person.getAddress() != null ? person.getAddress().value : NONE_STRING));
+        email.setText("Email: " + (person.getEmail() != null ? person.getEmail().value : NONE_STRING));
+    }
 
-        if (person.getDate() != null) {
-            date.setText("Date: " + person.getDate().toString());
-        } else {
-            date.setText("Date: " + NONESTRING);
-        }
-
-        if (person.getPhone() == null || person.getPhone().toString().isEmpty()) {
-            phone.setText("Contact: " + NONESTRING);
-        } else {
-            phone.setText("Phone: " + person.getPhone().value);
-        }
-
-        if (person.getAddress() != null) {
-            address.setText("Address: " + person.getAddress().value);
-        } else {
-            address.setText("Address: " + NONESTRING);
-        }
-
-        if (person.getEmail() != null) {
-            email.setText("Email: " + person.getEmail().value);
-        } else {
-            email.setText("Email: " + NONESTRING);
-        }
-
+    /**
+     * Set Status of Application.
+     */
+    private void setStatusInfo() {
         if (person.getStatus() != null) {
             status.setText(person.getStatus().value);
             status.getStyleClass().removeIf(s -> s.startsWith("status-"));
             status.getStyleClass().add("status-" + person.getStatus().getStyleClass());
         } else {
-            status.setText(NONESTRING);
+            status.setText(NONE_STRING);
         }
+    }
 
+    /**
+     * Set Reminder of Application.
+     */
+    private void setReminderInfo() {
         if (person.hasReminder()) {
             Reminder u = person.getReminder();
             this.reminder.setVisible(true);
@@ -106,44 +114,11 @@ public class PersonCard extends UiPart<Region> {
         } else {
             this.reminder.setVisible(false);
         }
-
-        person.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
-    private void setBasicInfo(int displayedIndex) {
-        id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
-        role.setText(" - " + person.getRole().value + "  ");
-        date.setText("Date: " + (person.getDate() != null ? person.getDate().toString() : NONESTRING));
-    }
-
-    private void setContactInfo() {
-        phone.setText("Phone: " + (person.getPhone() != null ? person.getPhone().value : NONESTRING));
-        address.setText("Address: " + (person.getAddress() != null ? person.getAddress().value : NONESTRING));
-        email.setText("Email: " + (person.getEmail() != null ? person.getEmail().value : NONESTRING));
-    }
-
-    private void setStatusInfo() {
-        if (person.getStatus() != null) {
-            status.setText(person.getStatus().value);
-            status.getStyleClass().removeIf(s -> s.startsWith("status-"));
-            status.getStyleClass().add("status-" + person.getStatus().getStyleClass());
-        } else {
-            status.setText(NONESTRING);
-        }
-    }
-
-    private void setReminderInfo() {
-        if (person.hasReminder()) {
-            Reminder u = person.getReminder();
-            reminder.setVisible(true);
-            reminder.setText(u.getReminderName() + " - " + u.getReminderDate().value);
-        } else {
-            reminder.setVisible(false);
-        }
-    }
-
+    /**
+     * Set Tags of Application.
+     */
     private void setTags() {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
