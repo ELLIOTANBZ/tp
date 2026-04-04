@@ -154,15 +154,19 @@ public class AddCommandParser implements Parser<AddCommand> {
      * Parses status if present else return null
      *
      * @param argMultimap the ArgumentMultimap containing the parsed arguments
-     * @return a Status object if present, else null
+     * @return a Status object
      * @throws ParseException
      */
     private Status parseStatus(ArgumentMultimap argMultimap) throws ParseException {
         if (arePrefixesPresent(argMultimap, PREFIX_STATUS)) {
-            logger.info("status: " + argMultimap.getValue(PREFIX_STATUS).get());
-            return ParserUtil.parseStatus(argMultimap.getValue(PREFIX_STATUS).get());
+            String statusValue = argMultimap.getValue(PREFIX_STATUS).get();
+            logger.info("status: " + statusValue);
+            if (statusValue == null || statusValue.isEmpty()) {
+                return new Status("");
+            }
+            return ParserUtil.parseStatus(statusValue);
         } else {
-            return null;
+            return new Status("");
         }
     }
 
