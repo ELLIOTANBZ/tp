@@ -30,6 +30,7 @@ public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a company application.\n"
+            + "Required fields: n/NAME r/ROLE and the other fields are optional\n"
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
@@ -37,8 +38,8 @@ public class AddCommand extends Command {
             + PREFIX_ROLE + "ROLE "
             + PREFIX_DATE + "DATE "
             + PREFIX_STATUS + "STATUS "
-            + PREFIX_TAG + "[TAGS...]"
-            + PREFIX_REMINDER + "REMINDER"
+            + PREFIX_TAG + "[TAGS...] "
+            + PREFIX_REMINDER + "REMINDER "
             + PREFIX_REMINDER_DATE + "REMINDER_DATE\n"
             + "Example:\n"
             + "add n/Microsoft p/4258828080 e/jobs@microsoft.com "
@@ -46,8 +47,7 @@ public class AddCommand extends Command {
             + "d/2024-03-16 r/Product Manager "
             + "s/interview t/tech "
             + "u/final interview ud/2024-03-14\n"
-            + "only required fields: n/NAME r/ROLE and the other fields are optional\n"
-            + "both reminder and reminder date must be provided to add a reminder\n";
+            + "Note: both reminder and reminder date must be provided to add a reminder\n";
 
     public static final String MESSAGE_SUCCESS = "New application added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON =
