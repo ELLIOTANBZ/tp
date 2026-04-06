@@ -78,6 +78,12 @@ public class FilterCommandParserTest {
     }
 
     @Test
+    public void parse_unknownPrefixAfterValidPrefix_failure() {
+        assertParseFailure(parser, " n/test j/ywteyu",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_missingCompanyValue_failure() {
         assertParseFailure(parser, " n/ ", FilterCommandParser.MESSAGE_INVALID_COMPANY_FORMAT);
     }

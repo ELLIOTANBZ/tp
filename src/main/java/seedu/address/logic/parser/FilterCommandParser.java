@@ -9,8 +9,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -52,6 +56,8 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     public static final String MESSAGE_MULTIPLE_TAGS =
             "Please filter by only 1 tag.";
     private static final String DATE_SHAPE_REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
+    private static final Pattern PREFIX_LIKE_PATTERN = Pattern.compile("(^|\\s)([A-Za-z])/");
+    private static final Set<String> SUPPORTED_PREFIXES = Set.of("n", "d", "r", "s", "t");
 
     @Override
     public FilterCommand parse(String args) throws ParseException {
@@ -59,7 +65,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, PREFIX_NAME, PREFIX_DATE, PREFIX_ROLE, PREFIX_STATUS, PREFIX_TAG);
 
-        validateArguments(argMultimap);
+        validateArguments(args, argMultimap);
 
         List<Predicate<Application>> predicates = new ArrayList<>();
         addCompanyPredicate(argMultimap, predicates);
@@ -71,12 +77,14 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         return new FilterCommand(new ApplicationMatchesAllPredicate(predicates));
     }
 
-    private void validateArguments(ArgumentMultimap argMultimap) throws ParseException {
+    private void validateArguments(String args, ArgumentMultimap argMultimap) throws ParseException {
         if (argMultimap.getPreamble().startsWith("/")) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
-        if (!argMultimap.getPreamble().isEmpty() || !hasAnySupportedPrefix(argMultimap)) {
+        if (!argMultimap.getPreamble().isEmpty()
+                || !hasAnySupportedPrefix(argMultimap)
+                || containsUnsupportedPrefix(args)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
@@ -180,5 +188,16 @@ public class FilterCommandParser implements Parser<FilterCommand> {
                 || argMultimap.getValue(PREFIX_ROLE).isPresent()
                 || argMultimap.getValue(PREFIX_STATUS).isPresent()
                 || argMultimap.getValue(PREFIX_TAG).isPresent();
+    }
+
+    private boolean containsUnsupportedPrefix(String args) {
+        Matcher matcher = PREFIX_LIKE_PATTERN.matcher(args);
+        Set<String> seenPrefixes = new HashSet<>();
+
+        while (matcher.find()) {
+            seenPrefixes.add(matcher.group(2).toLowerCase());
+        }
+
+        return seenPrefixes.stream().anyMatch(prefix -> !SUPPORTED_PREFIXES.contains(prefix));
     }
 }
