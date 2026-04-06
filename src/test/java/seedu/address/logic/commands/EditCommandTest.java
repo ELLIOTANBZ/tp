@@ -16,6 +16,8 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.BENSON_WITH_REMINDER_INTERVIEW;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -40,7 +42,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
-        Application editedPerson = new PersonBuilder().build();
+        Application editedPerson = new PersonBuilder().withDate(LocalDate.now().minusDays(1).toString()).build();
         Application originalPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
 
@@ -143,6 +145,22 @@ public class EditCommandTest {
 
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
         otherApplicant.setBeingEdited(false);
+    }
+
+    @Test
+    public void execute_futureDate_failure() {
+        Application editedPerson = new PersonBuilder().withDate(LocalDate.now().plusDays(1).toString()).build();
+        Application originalPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
+
+        EditCommand editCommand = new EditCommand(descriptor);
+
+        originalPerson.setBeingEdited(true);
+
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DATE_NOT_ALLOWED);
+
+        originalPerson.setBeingEdited(false);
+        editedPerson.setBeingEdited(false);
     }
 
     @Test

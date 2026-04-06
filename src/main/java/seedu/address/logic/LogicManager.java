@@ -3,6 +3,7 @@ package seedu.address.logic;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ListFolderCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookEditingParser;
 import seedu.address.logic.parser.AddressBookParser;
@@ -37,7 +39,6 @@ public class LogicManager implements Logic {
     private final AddressBookParser normalParser;
     private final AddressBookEditingParser editingParser;
     private AddressBookParser currentParser;
-    private ParserMode currentMode;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -61,27 +62,44 @@ public class LogicManager implements Logic {
     @Override
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
-        CommandResult commandResult;
-
         Command command = currentParser.parseCommand(commandText);
-        commandResult = command.execute(model);
+        CommandResult commandResult = command.execute(model);
 
-        // check if editing mode or normal mode
+        if (commandResult.isListFolders()) {
+            return buildFolderListResult();
+        }
+
+        updateParserMode(commandResult);
+        saveAddressBook();
+        applyFolderSwitch(commandResult);
+        return commandResult;
+    }
+
+    /** Queries storage for available folders and returns a formatted {@code CommandResult}. */
+    private CommandResult buildFolderListResult() {
+        List<String> folders = storage.getAvailableFolders();
+        String message = folders.isEmpty()
+                ? ListFolderCommand.MESSAGE_NO_FOLDERS
+                : ListFolderCommand.MESSAGE_FOLDERS_LISTED + String.join("\n", folders);
+        return new CommandResult(message);
+    }
+
+    /** Switches the active parser based on the mode indicated by {@code commandResult}. */
+    private void updateParserMode(CommandResult commandResult) {
         switch (commandResult.getParserMode()) {
         case EDITING:
             currentParser = editingParser;
-            currentMode = ParserMode.EDITING;
             break;
         case NORMAL:
             currentParser = normalParser;
-            currentMode = ParserMode.NORMAL;
-            break;
-        case NO_CHANGE:
             break;
         default:
             break;
         }
+    }
 
+    /** Persists the current address book to storage. */
+    private void saveAddressBook() throws CommandException {
         try {
             storage.saveAddressBook(model.getAddressBook());
         } catch (AccessDeniedException e) {
@@ -89,13 +107,14 @@ public class LogicManager implements Logic {
         } catch (IOException ioe) {
             throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
         }
+    }
 
+    /** Triggers a folder switch if {@code commandResult} signals one. */
+    private void applyFolderSwitch(CommandResult commandResult) throws CommandException {
         String folderName = commandResult.getFolderName();
         if (folderName != null) {
             handleFolderSwitch(folderName, commandResult.isCreateNew());
         }
-
-        return commandResult;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class CommandTestUtil {
     public static final String VALID_ROLE_AMY = "Software Engineer";
     public static final String VALID_ROLE_BOB = "Project Manager";
     public static final String VALID_STATUS_AMY = "pending";
-    public static final String VALID_STATUS_BOB = "interviewed";
+    public static final String VALID_STATUS_BOB = "interview";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -70,6 +70,7 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
     public static final String INVALID_DATE_DESC = " " + PREFIX_DATE + "2024-13-45"; // invalid month and day
+    public static final String INVALID_FUTUREDATE_DESC = " " + PREFIX_DATE + "2027-12-12"; // invalid future date
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + " "; // empty role
     public static final String INVALID_STATUS_DESC = " " + PREFIX_STATUS + " "; // invalid status
 

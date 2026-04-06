@@ -10,6 +10,7 @@ import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_DATE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_FUTUREDATE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
@@ -201,29 +202,11 @@ public class AddCommandParserTest {
         assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + DATE_DESC_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB, expectedMessage);
 
-        //        // missing phone prefix
-        //        assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-        //                + DATE_DESC_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB, expectedMessage);
-        //
-        //        // missing email prefix
-        //        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB + ADDRESS_DESC_BOB
-        //                + DATE_DESC_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB, expectedMessage);
-        //
-        //        // missing address prefix
-        //        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + VALID_ADDRESS_BOB
-        //                + DATE_DESC_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB, expectedMessage);
-        //
-        //        // missing date prefix
-        //        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-        //                + VALID_DATE_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB, expectedMessage);
-
         // missing role prefix
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
                 + DATE_DESC_BOB + VALID_ROLE_BOB + STATUS_DESC_BOB, expectedMessage);
-        //
-        //        // missing status prefix
-        //        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-        //                + DATE_DESC_BOB + ROLE_DESC_BOB + VALID_STATUS_BOB, expectedMessage);
+
+        // All prefixes other than name and role is optional.
 
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_EMAIL_BOB + VALID_ADDRESS_BOB
@@ -247,15 +230,12 @@ public class AddCommandParserTest {
                 + DATE_DESC_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 Email.MESSAGE_CONSTRAINTS);
 
-        // invalid address
-        // assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC
-        //     + DATE_DESC_BOB + ROLE_DESC_BOB + STATUS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
-        //     Address.MESSAGE_CONSTRAINTS);
+        // no invalid address
 
         // invalid date
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_DATE_DESC + ROLE_DESC_BOB + STATUS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
-                Date.MESSAGE_CONSTRAINTS);
+                + INVALID_FUTUREDATE_DESC + ROLE_DESC_BOB + STATUS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+                Date.MESSAGE_FUTURE_DATE);
 
         // invalid role
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB

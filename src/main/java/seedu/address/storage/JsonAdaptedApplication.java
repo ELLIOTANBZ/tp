@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -28,8 +29,9 @@ import seedu.address.model.tag.Tag;
  */
 class JsonAdaptedApplication {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
-    public static final String NONESTRING = "";
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Application's %s field is missing!";
+    private static final String NONE_STRING = "";
+    private static final Logger logger = Logger.getLogger(JsonAdaptedApplication.class.getName());
 
     private final String name;
     private final String phone;
@@ -40,12 +42,12 @@ class JsonAdaptedApplication {
     private final String date;
     private final String reminderEvent;
     private final String reminderDate;
-    private Boolean hasReminder = false;
+    private boolean hasReminder = false;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
-     * Overloaded version of the constructor to support reminder and not require much refactoring.
      */
     @JsonCreator
     public JsonAdaptedApplication(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
@@ -66,19 +68,21 @@ class JsonAdaptedApplication {
         this.date = date;
         this.role = role;
         this.status = status;
-
         this.reminderEvent = reminderEvent;
         this.reminderDate = reminderDate;
     }
 
+    /**
+     * Constructs a {@code JsonAdaptedApplication} with the input Application.
+     */
     public JsonAdaptedApplication(Application source) {
         name = source.getName().fullName;
         role = source.getRole().value;
-        phone = source.getPhone() != null ? source.getPhone().value : NONESTRING;
-        email = source.getEmail() != null ? source.getEmail().value : NONESTRING;
-        address = source.getAddress() != null ? source.getAddress().value : NONESTRING;
-        date = source.getDate() != null ? source.getDate().value : NONESTRING;
-        status = source.getStatus() != null ? source.getStatus().value : NONESTRING;
+        phone = source.getPhone() != null ? source.getPhone().value : NONE_STRING;
+        email = source.getEmail() != null ? source.getEmail().value : NONE_STRING;
+        address = source.getAddress() != null ? source.getAddress().value : NONE_STRING;
+        date = source.getDate() != null ? source.getDate().value : NONE_STRING;
+        status = source.getStatus() != null ? source.getStatus().value : NONE_STRING;
 
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
@@ -90,16 +94,15 @@ class JsonAdaptedApplication {
     }
 
     /**
-     * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
+     * Converts this JSON adapted Application object into the model's {@code Application} object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
+     * @throws IllegalValueException if there were any data constraints violated in the adapted Application.
      */
     public Application toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> applicationTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
+            applicationTags.add(tag.toModelType());
         }
-
         checkMandatoryFields();
         final Name modelName = new Name(name);
         final Role modelRole = new Role(role);
@@ -111,13 +114,19 @@ class JsonAdaptedApplication {
                     Address.MESSAGE_CONSTRAINTS, Address::new);
         final Status modelStatus = parseOptional(status, Status::isValidStatus,
                     Status.MESSAGE_CONSTRAINTS, Status::new);
-        final Set<Tag> modelTags = new HashSet<>(personTags);
+        final Set<Tag> modelTags = new HashSet<>(applicationTags);
         final Reminder modelReminder = parseOptionalReminder();
 
         return new Application(modelName, modelPhone, modelEmail, modelAddress, modelTags,
                 modelDate, modelRole, modelStatus, modelReminder);
     }
 
+
+    /**
+     * Checks for valid and present Application Name and Role fields.
+     *
+     * @throws IllegalValueException If Invalid or Missing Application Name and Role fields.
+     */
     private void checkMandatoryFields() throws IllegalValueException {
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
@@ -133,23 +142,49 @@ class JsonAdaptedApplication {
         }
     }
 
+    /**
+     * Parses the reminder if present.
+     *
+     * @return Reminder object, or null if no reminder exists.
+     * @throws IllegalValueException If reminder fields are invalid or missing.
+     */
     private Reminder parseOptionalReminder() throws IllegalValueException {
         if (hasReminder) {
             if (reminderEvent == null || reminderDate == null) {
                 throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                         Reminder.class.getSimpleName()));
             }
+            logger.info("Parsing reminder");
+            logger.warning("Invalid reminder: " + reminderEvent);
             if (!Reminder.isValidReminder(reminderEvent)) {
-                throw new IllegalValueException(Reminder.MESSAGE_CONSTRAINTS);
+                throw new IllegalValueException(Reminder.REMINDER_MESSAGE_CONSTRAINTS);
             }
             if (!Date.isValidDate(reminderDate)) {
-                throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
+                throw new IllegalValueException(Reminder.DATE_MESSAGE_CONSTRAINTS);
             }
             return new Reminder(reminderEvent, reminderDate);
+        }
+        logger.info("No reminder");
+        if (reminderEvent == null ^ reminderDate == null) {
+            if (reminderEvent == null) {
+                throw new IllegalValueException(Reminder.REMINDER_MESSAGE_CONSTRAINTS);
+            }
+            throw new IllegalValueException(Reminder.DATE_MESSAGE_CONSTRAINTS);
         }
         return null;
     }
 
+    /**
+     * Parses an optional field.
+     *
+     * @param value Raw string value.
+     * @param validator Function to validate the value.
+     * @param errorMessage Error message if validation fails.
+     * @param constructor Function to construct the object.
+     * @param <T> Type of the parsed object.
+     * @return Parsed object, or null if value is empty.
+     * @throws IllegalValueException If invalid value is passed.
+     */
     private <T> T parseOptional(
             String value,
             Predicate<String> validator,
@@ -163,5 +198,4 @@ class JsonAdaptedApplication {
         }
         return constructor.apply(value);
     }
-
 }
