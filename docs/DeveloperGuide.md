@@ -397,28 +397,63 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes from step 7.
 
-**Use case: Create Contact**
+**Use case: UC4 - Add application**
 
 **MSS**
 
-1. User request to add new job application.
-2. OfferFlow prompts for the required job application details.
-3. User enters the job application details.
-4. OfferFlow creates the new job application.
+1. User enters the new job application that they want to add, minimally the company name and job position they applied but can also choose to add other details like date of application, contact details like email, phone number, address, status of application, reminders.
+2. OfferFlow creates and adds the application with the given details
 
    Use case ends.
 
 **Extensions**
 
-   * 3a. The user enters details in an invalid format.
+   * 1a. The user enters an application which has the same company name and job position as a previously added application.
 
-      * 3a1. OfferFlow shows an error message.
+      *1a1. OfferFlow saves the incoming duplicate application incase the user would like to overwrite the previously added application with the new application
 
-      * 3a2. User re-enters the details.
+      * 1a2. OfferFlow shows an error message stating that a duplication application has been found and displays the string format of the previously existing application for user to see.
 
-         Use case resumes at step 3.
+      * 1a3. OfferFlow also tells user that if they can overwrite the previously added duplicate application with the saved new application using the `overwrite` command else the saved new application would be discarded.
 
-**Use case: Delete Contact**
+      * 1a4. User <u>chooses to overwrite the previously added application with the new application. (UC5)</u>
+
+         Use case ends.
+
+   * 1b. The user enters an application with invalid company name format.
+
+      * 1b1. OfferFlow shows an error message stating that the name format is invalid and shows the valid format for adding company name.
+
+         Use case resumes from step 1 if user trys to add an application again.
+
+   * 1c. If the user enters an application with invalid format for any detail field (job position, date, reminder, status, address, email, or phone number)
+
+      * 1c1. the process follows step 1b extension. However, the error message will be specific to each invalid field, showing either the valid format or the specific error reason.
+
+   * 1d. The user enters the wrong command format when trying to add an application
+
+      * 1d1. OfferFlows shows an error message stating the valid command format together with an example
+
+         Use case resumes from step 1 if user trys to add an application again.
+
+
+**Use case: UC5 - Overwrite an application**
+
+**MSS**
+
+1. User enters the `overwrite` command
+2. OfferFlow deletes the existing duplicate application and adds the stored new application
+3. OfferFlow clears the storage of the new application
+
+**Extensions**
+
+* 1a. There is no new duplicate application stored.
+
+    * 1a1. OfferFlow shows an error message stating that there is no duplicate application to overwrite.
+
+      Use case ends.
+
+**Use case: Delete an application**
 
 **MSS**
 
