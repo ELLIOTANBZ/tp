@@ -5,6 +5,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -39,22 +41,29 @@ import seedu.address.model.tag.Tag;
 public class EditCommand extends Command {
 
     public static final String MESSAGE_USAGE = "Edits the details of the application identified "
-            + "by the index number used in the displayed person list / combination of Company Name and Job Role. "
+            + "by the index number used in the displayed application list / combination of Company Name and Job Role. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: [" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TAG + "TAG]...\n"
+            + "Note that [" + PREFIX_REMINDER + " REMINDER] must be paired with "
+            + "[" + PREFIX_REMINDER_DATE + " REMINDER_DATE]. \n"
             + "Example: "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Application: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This application already exists in the address book.";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Application: %1$s. To exit editing mode, "
+            + "enter \"editexit\".";
+    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided. Note only edit "
+            + "commands are allowed in editing mode. To exit editing mode, enter \"editexit\".";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This application already exists in the address book."
+            + "To exit editing mode, enter \"editexit\".";
     public static final String MESSAGE_NO_APPLICATION_EDITED = "No application is marked for editing "
             + "- this is likely due to an internal error.";
+    public static final String MESSAGE_DATE_NOT_ALLOWED = "Date cannot be a date later than today. To exit editing "
+            + "mode, enter \"editexit\"";
 
     private final EditPersonDescriptor editPersonDescriptor;
 
@@ -93,15 +102,20 @@ public class EditCommand extends Command {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.
      */
-    private static Application createEditedPerson(Application personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Application createEditedPerson(Application personToEdit,
+                                                  EditPersonDescriptor editPersonDescriptor) throws CommandException {
         assert personToEdit != null;
+        boolean isFutureDate = editPersonDescriptor.getDate().map(x -> !x.checkNotFutureDate()).orElse(false);
+        if (isFutureDate) {
+            throw new CommandException(MESSAGE_DATE_NOT_ALLOWED);
+        }
 
+        Date updatedDate = editPersonDescriptor.getDate().orElse(personToEdit.getDate());
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-        Date updatedDate = editPersonDescriptor.getDate().orElse(personToEdit.getDate());
         Role updatedRole = editPersonDescriptor.getRole().orElse(personToEdit.getRole());
         Status updatedStatus = editPersonDescriptor.getStatus().orElse(personToEdit.getStatus());
         Reminder updateReminder = editPersonDescriptor.getReminder().orElse(personToEdit.getReminder());

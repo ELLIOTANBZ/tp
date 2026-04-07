@@ -13,7 +13,7 @@ public class SameCompanySameRolePredicate implements Predicate<Application> {
     private final Role role;
 
     /**
-     * Constructor a Predicate to check for same Applications.
+     * Constructs a Predicate to check for same Applications.
      */
     public SameCompanySameRolePredicate(Name name, Role role) {
         this.name = name;

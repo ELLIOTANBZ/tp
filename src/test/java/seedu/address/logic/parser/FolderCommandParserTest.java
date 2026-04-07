@@ -9,50 +9,39 @@ import seedu.address.logic.commands.FolderCommand;
 
 public class FolderCommandParserTest {
 
-    private final FolderCommandParser folderParser = new FolderCommandParser(true);
-    private final FolderCommandParser toggleParser = new FolderCommandParser(false);
+    private final FolderCommandParser parser = new FolderCommandParser();
 
     @Test
-    public void parse_emptyFolderArgs_throwsParseException() {
-        assertParseFailure(folderParser, " ",
-                "Folder name cannot be empty.\n" + FolderCommand.MESSAGE_USAGE_FOLDER);
-    }
-
-    @Test
-    public void parse_emptyToggleArgs_throwsParseException() {
-        assertParseFailure(toggleParser, " ",
-                "Folder name cannot be empty.\n" + FolderCommand.MESSAGE_USAGE_TOGGLE);
+    public void parse_emptyArgs_throwsParseException() {
+        assertParseFailure(parser, " ",
+                "Folder name cannot be empty.\n" + FolderCommand.MESSAGE_USAGE);
     }
 
     @Test
     public void parse_nameWithSpaces_throwsParseException() {
-        assertParseFailure(folderParser, "Y1 S2",
+        assertParseFailure(parser, "Y1 S2",
                 "Folder name can only contain letters, numbers, underscores, and hyphens.");
     }
 
     @Test
     public void parse_nameWithSpecialChars_throwsParseException() {
-        assertParseFailure(folderParser, "name@folder",
+        assertParseFailure(parser, "name@folder",
                 "Folder name can only contain letters, numbers, underscores, and hyphens.");
     }
 
     @Test
-    public void parse_validFolderArgs_returnsFolderCommand() {
-        assertParseSuccess(folderParser, "Y1S2", new FolderCommand("Y1S2", true));
-    }
-
-    @Test
-    public void parse_validToggleArgs_returnsFolderCommand() {
-        assertParseSuccess(toggleParser, "Y1S2", new FolderCommand("Y1S2", false));
+    public void parse_validArgs_returnsFolderCommand() {
+        assertParseSuccess(parser, "Y1S2", new FolderCommand("Y1S2"));
     }
 
     @Test
     public void parse_validArgsWithWhitespace_returnsFolderCommand() {
-        assertParseSuccess(folderParser, "  Y1S2  ", new FolderCommand("Y1S2", true));
+        assertParseSuccess(parser, "  Y1S2  ", new FolderCommand("Y1S2"));
     }
 
     @Test
     public void parse_validArgsWithHyphen_returnsFolderCommand() {
-        assertParseSuccess(folderParser, "Y1-S2", new FolderCommand("Y1-S2", true));
+        assertParseSuccess(parser, "Y1-S2", new FolderCommand("Y1-S2"));
     }
+
 }

@@ -2,6 +2,7 @@ package seedu.address.storage;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
@@ -42,5 +43,11 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage {
      * Creates a new empty address book at data/{@code folderName}.json and switches to it.
      */
     void createFolder(String folderName) throws IOException;
+
+    /**
+     * Returns a sorted list of folder names (without .json extension)
+     * found in the data directory.
+     */
+    List<String> getAvailableFolders();
 
 }

@@ -29,6 +29,9 @@ public class CommandResult {
     /** True = start with empty address book (folder command), false = load existing data (toggle command). */
     private final boolean createNew;
 
+    /** True if LogicManager should list available folders and return the result. */
+    private final boolean isListFolders;
+
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
@@ -39,6 +42,7 @@ public class CommandResult {
         this.exit = exit;
         this.folderName = null;
         this.createNew = false;
+        this.isListFolders = false;
     }
 
     /**
@@ -54,6 +58,20 @@ public class CommandResult {
         this.exit = false;
         this.folderName = requireNonNull(folderName);
         this.createNew = createNew;
+        this.isListFolders = false;
+    }
+
+    /**
+     * Constructs a {@code CommandResult} that signals {@code LogicManager} to list available folders.
+     */
+    public CommandResult(boolean isListFolders) {
+        this.feedbackToUser = "";
+        this.showHelp = false;
+        this.parserMode = ParserMode.NO_CHANGE;
+        this.exit = false;
+        this.folderName = null;
+        this.createNew = false;
+        this.isListFolders = isListFolders;
     }
 
     /**
@@ -86,6 +104,10 @@ public class CommandResult {
 
     public boolean isCreateNew() {
         return createNew;
+    }
+
+    public boolean isListFolders() {
+        return isListFolders;
     }
 
     @Override

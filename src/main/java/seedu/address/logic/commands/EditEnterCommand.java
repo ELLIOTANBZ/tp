@@ -1,7 +1,8 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
-import java.util.Objects;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
@@ -17,17 +18,18 @@ import seedu.address.model.person.SameCompanySameRolePredicate;
 public class EditEnterCommand extends Command {
 
     public static final String COMMAND_WORD = "editmode";
-    public static final String MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT = "Entering Editing mode as requested ...";
+    public static final String MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT = "Entering editing mode for"
+            + " application: %1$s";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ":\n"
             + "Edit via INDEX (Enter editing mode for the Application identified by the index number in "
-            + "the displayed person list)\n"
+            + "the displayed application list)\n"
             + "Edit via Name and Role (Enter editing mode for the Application with the exact Name and Role) \n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1\n"
             + "Parameters: Name (String), Role (String with no numbers) \n"
-            + "Example: " + COMMAND_WORD + " n/Goog r/CEO";
+            + "Example: " + COMMAND_WORD + " n/Google r/CEO";
 
     private final Index targetIndex;
     private final Name name;
@@ -39,7 +41,7 @@ public class EditEnterCommand extends Command {
      * @param index
      */
     public EditEnterCommand(Index index) {
-        Objects.requireNonNull(index);
+        requireNonNull(index);
         this.targetIndex = index;
         this.name = null;
         this.role = null;
@@ -52,8 +54,8 @@ public class EditEnterCommand extends Command {
      * @param role
      */
     public EditEnterCommand(Name name, Role role) {
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(role);
+        requireNonNull(name);
+        requireNonNull(role);
         this.targetIndex = null;
         this.name = name;
         this.role = role;
@@ -63,7 +65,7 @@ public class EditEnterCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        Objects.requireNonNull(model);
+        requireNonNull(model);
         List<Application> lastShownList = model.getFilteredPersonList();
 
         Application applicationToEdit;
@@ -80,7 +82,9 @@ public class EditEnterCommand extends Command {
         }
 
         applicationToEdit.setBeingEdited(true);
-        return new CommandResult(MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT, false, ParserMode.EDITING, false);
+        String resultMessage = String.format(MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT,
+                Messages.format(applicationToEdit));
+        return new CommandResult(resultMessage, false, ParserMode.EDITING, false);
     }
 
 

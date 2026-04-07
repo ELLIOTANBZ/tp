@@ -4,24 +4,23 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * A Class to represent the name of the role the user applied for.
+ * Represents the role the user applied for.
  */
 public class Role {
 
 
-    public static final String MESSAGE_CONSTRAINTS = "Job Role should be letters, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Job Role must not be blank, "
+            + "contain letters only and no consecutive spaces";
 
     /*
      * Job Role name should be entirely letters.
      */
-    public static final String VALIDATION_REGEX = "[A-Za-z][A-Za-z ]*";
+    public static final String VALIDATION_REGEX = "(?!.* {2})[A-Za-z][A-Za-z ]*";
 
     public final String value;
 
     /**
      * Constructs an {@code Role}.
-     *
-     * @param jobRole A valid job role  .
      */
     public Role(String jobRole) {
         requireNonNull(jobRole);
@@ -30,7 +29,7 @@ public class Role {
     }
 
     /**
-     * Returns true if a given string is a valid email.
+     * Returns true if a given string is a valid role.
      */
     public static boolean isValidJobRole(String test) {
         return test.matches(VALIDATION_REGEX);

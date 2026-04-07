@@ -15,7 +15,7 @@ import seedu.address.model.person.Role;
 import seedu.address.model.person.SameCompanySameRolePredicate;
 
 /**
- * Deletes a person identified using it's displayed index from the address book.
+ * Deletes an Application via it's displayed index in the address book or via it's Company Name and Role.
  */
 public class DeleteCommand extends Command {
 
@@ -30,7 +30,7 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " n/Goog r/CEO";
 
 
-    public static final String MESSAGE_DELETE_APPLICATION_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_DELETE_APPLICATION_SUCCESS = "Deleted Application: %1$s";
 
     private final boolean isIndexDelete;
     private final Index targetIndex;
@@ -38,8 +38,9 @@ public class DeleteCommand extends Command {
     private final Role role;
 
     /**
-     * Constructor for a Delete via Index command.
-     * @param targetIndex
+     * Constructs a DeleteCommand via Index.
+     *
+     * @param targetIndex Application index.
      */
     public DeleteCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
@@ -49,10 +50,10 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Constructor for a Delete via Application command.
+     * Constructs a DeleteCommand via Company Name and Role or Application.
      *
-     * @param name
-     * @param role
+     * @param name Company Name.
+     * @param role Company Job Role.
      */
     public DeleteCommand(Name name, Role role) {
         this.targetIndex = null;
@@ -71,11 +72,11 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Execute a delete via Index command.
+     * Executes a Delete via Index command.
      *
      * @param model current model.
      * @return result of the command execution.
-     * @throws CommandException if command is invalid.
+     * @throws CommandException If specified Application Index is invalid.
      */
     public CommandResult executeDeleteByIndex(Model model) throws CommandException {
         requireNonNull(model);
@@ -90,17 +91,16 @@ public class DeleteCommand extends Command {
     }
 
     /**
-     * Execute a delete via Application command.
+     * Executes a delete via Application Name and role command.
      *
-     * @param model current model.
-     * @return result of the command execution.
-     * @throws CommandException if command is invalid.
+     * @param model Current model.
+     * @return Result of the command execution.
+     * @throws CommandException If Target Application is invalid or cannot be found.
      */
     public CommandResult executeDeleteByApplication(Model model) throws CommandException {
         requireNonNull(model);
         List<Application> lastShownList = model.getFilteredPersonList();
         SameCompanySameRolePredicate predicate = new SameCompanySameRolePredicate(name, role);
-
         Application personToDelete = lastShownList.stream().filter(predicate).findFirst()
                 .orElseThrow(() -> new CommandException(Messages.MESSAGE_INVALID_APPLICATION_IDENTIFIER));
 

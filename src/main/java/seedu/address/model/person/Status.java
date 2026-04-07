@@ -3,19 +3,19 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import java.util.Set;
+
 /**
  * Represents a Person's application status in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidStatus(String)}
  */
 public class Status {
 
-    public static final String MESSAGE_CONSTRAINTS = "Status can take any non-blank value, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Valid Statuses are Interested -> Applied ->"
+            + " Interview -> Pending -> Offered or Rejected -> Accepted";
 
-    /*
-     * The first character of the status must not be a whitespace, otherwise " "
-     * (a blank string) becomes a valid input.
-     */
-    public static final String VALIDATION_REGEX = "[^\\s].*";
+    private static final Set<String> VALID_STATUSES = Set.of("interested", "applied",
+            "pending", "interview", "offered", "rejected", "accepted", "");
 
     public final String value;
 
@@ -27,14 +27,46 @@ public class Status {
     public Status(String status) {
         requireNonNull(status);
         checkArgument(isValidStatus(status), MESSAGE_CONSTRAINTS);
-        value = status;
+        value = getNormalisedStatus(status);
     }
 
     /**
      * Returns true if a given string is a valid status.
      */
     public static boolean isValidStatus(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test != null && (test.isEmpty() || VALID_STATUSES.contains(test.toLowerCase()));
+    }
+
+    /**
+     * Returns standardised Statues String representation, where the first letter is capitalised.
+     */
+    private String getNormalisedStatus(String status) {
+        assert status != null;
+
+        return switch (status.toLowerCase()) {
+        case "applied" -> "Applied";
+        case "interview" -> "Interview";
+        case "rejected" -> "Rejected";
+        case "offered" -> "Offered";
+        case "pending" -> "Pending";
+        case "accepted" -> "Accepted";
+        default -> "Interested";
+        };
+    }
+
+    public String getStyleClass() {
+        assert value != null;
+
+        String statusVal = this.value.toLowerCase();
+        return switch (statusVal) {
+        case "applied" -> "Applied";
+        case "interview" -> "Interview";
+        case "rejected" -> "Rejected";
+        case "offered" -> "Offered";
+        case "pending" -> "Pending";
+        case "accepted" -> "Accepted";
+        default -> "Interested";
+        };
     }
 
     @Override

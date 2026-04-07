@@ -20,9 +20,12 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FolderCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListFolderCommand;
 import seedu.address.logic.commands.OverwriteCommand;
 import seedu.address.logic.commands.RemoveReminderCommand;
 import seedu.address.logic.commands.StatusCommand;
+import seedu.address.logic.commands.ToggleCommand;
+import seedu.address.logic.commands.UpcomingCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.DuplicateApplicationStore;
 
@@ -109,14 +112,22 @@ public class AddressBookParser {
             command = new OverwriteCommand();
             break;
 
-        case FolderCommand.COMMAND_WORD_FOLDER:
-            return new FolderCommandParser(true).parse(arguments);
+        case UpcomingCommand.COMMAND_WORD:
+            command = new UpcomingCommandParser().parse(arguments);
+            break;
 
-        case FolderCommand.COMMAND_WORD_TOGGLE:
-            return new FolderCommandParser(false).parse(arguments);
+        case FolderCommand.COMMAND_WORD:
+            return new FolderCommandParser().parse(arguments);
+
+        case ListFolderCommand.COMMAND_WORD:
+            return new ListFolderCommand();
+
+        case ToggleCommand.COMMAND_WORD:
+            return new ToggleCommandParser().parse(arguments);
 
         case RemoveReminderCommand.COMMAND_WORD:
-            return new RemoveReminderCommandParser().parse(arguments);
+            command = new RemoveReminderCommandParser().parse(arguments);
+            break;
 
         default:
             if (normalizedFilterArguments != null) {

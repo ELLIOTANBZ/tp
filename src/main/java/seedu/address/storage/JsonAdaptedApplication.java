@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -26,7 +29,9 @@ import seedu.address.model.tag.Tag;
  */
 class JsonAdaptedApplication {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Application's %s field is missing!";
+    private static final String NONE_STRING = "";
+    private static final Logger logger = Logger.getLogger(JsonAdaptedApplication.class.getName());
 
     private final String name;
     private final String phone;
@@ -37,12 +42,12 @@ class JsonAdaptedApplication {
     private final String date;
     private final String reminderEvent;
     private final String reminderDate;
-    private Boolean hasReminder = false;
+    private boolean hasReminder = false;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
-     * Overloaded version of the constructor to support reminder and not require much refactoring.
      */
     @JsonCreator
     public JsonAdaptedApplication(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
@@ -63,26 +68,25 @@ class JsonAdaptedApplication {
         this.date = date;
         this.role = role;
         this.status = status;
-
-
         this.reminderEvent = reminderEvent;
         this.reminderDate = reminderDate;
     }
 
     /**
-     * Converts a given {@code Person} into this class for Jackson use.
+     * Constructs a {@code JsonAdaptedApplication} with the input Application.
      */
     public JsonAdaptedApplication(Application source) {
         name = source.getName().fullName;
-        phone = source.getPhone().value;
-        email = source.getEmail().value;
-        address = source.getAddress().value;
+        role = source.getRole().value;
+        phone = source.getPhone() != null ? source.getPhone().value : NONE_STRING;
+        email = source.getEmail() != null ? source.getEmail().value : NONE_STRING;
+        address = source.getAddress() != null ? source.getAddress().value : NONE_STRING;
+        date = source.getDate() != null ? source.getDate().value : NONE_STRING;
+        status = source.getStatus() != null ? source.getStatus().value : NONE_STRING;
+
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
-        date = source.getDate().value;
-        status = source.getStatus().value;
-        role = source.getRole().value;
 
         hasReminder = source.hasReminder();
         reminderEvent = hasReminder ? source.getReminder().getReminderName() : null;
@@ -90,96 +94,111 @@ class JsonAdaptedApplication {
     }
 
     /**
-     * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
+     * Converts this JSON adapted Application object into the model's {@code Application} object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
+     * @throws IllegalValueException if there were any data constraints violated in the adapted Application.
      */
     public Application toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> applicationTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
+            applicationTags.add(tag.toModelType());
         }
+        checkMandatoryFields();
+        final Name modelName = new Name(name);
+        final Role modelRole = new Role(role);
 
+        final Phone modelPhone = parseOptional(phone, Phone::isValidPhone, Phone.MESSAGE_CONSTRAINTS, Phone::new);
+        final Email modelEmail = parseOptional(email, Email::isValidEmail, Email.MESSAGE_CONSTRAINTS, Email::new);
+        final Date modelDate = parseOptional(date, Date::isValidDate, Date.MESSAGE_CONSTRAINTS, Date::new);
+        final Address modelAddress = parseOptional(address, Address::isValidAddress,
+                    Address.MESSAGE_CONSTRAINTS, Address::new);
+        final Status modelStatus = parseOptional(status, Status::isValidStatus,
+                    Status.MESSAGE_CONSTRAINTS, Status::new);
+        final Set<Tag> modelTags = new HashSet<>(applicationTags);
+        final Reminder modelReminder = parseOptionalReminder();
+
+        return new Application(modelName, modelPhone, modelEmail, modelAddress, modelTags,
+                modelDate, modelRole, modelStatus, modelReminder);
+    }
+
+
+    /**
+     * Checks for valid and present Application Name and Role fields.
+     *
+     * @throws IllegalValueException If Invalid or Missing Application Name and Role fields.
+     */
+    private void checkMandatoryFields() throws IllegalValueException {
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
         if (!Name.isValidName(name)) {
             throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
         }
-        final Name modelName = new Name(name);
-
-        if (phone == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
-        }
-        if (!Phone.isValidPhone(phone)) {
-            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
-        }
-        final Phone modelPhone = new Phone(phone);
-
-        if (email == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
-        }
-        if (!Email.isValidEmail(email)) {
-            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
-        }
-        final Email modelEmail = new Email(email);
-
-        if (address == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
-        }
-        if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
-        }
-        final Address modelAddress = new Address(address);
-
-        if (date == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Date.class.getSimpleName()));
-        }
-        if (!Date.isValidDate(date)) {
-            throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
-        }
-        final Date modelDate = new Date(date);
-
-        if (status == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Status.class.getSimpleName()));
-        }
-        if (!Status.isValidStatus(status)) {
-            throw new IllegalValueException(Status.MESSAGE_CONSTRAINTS);
-        }
-        final Status modelStatus = new Status(status);
-
         if (role == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Role.class.getSimpleName()));
         }
         if (!Role.isValidJobRole(role)) {
             throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
         }
-        final Role modelRole = new Role(role);
+    }
 
-        final Set<Tag> modelTags = new HashSet<>(personTags);
-
+    /**
+     * Parses the reminder if present.
+     *
+     * @return Reminder object, or null if no reminder exists.
+     * @throws IllegalValueException If reminder fields are invalid or missing.
+     */
+    private Reminder parseOptionalReminder() throws IllegalValueException {
+        logger.info("JsonAdaptedApplication: Parsing reminder");
         if (hasReminder) {
             if (reminderEvent == null || reminderDate == null) {
+                logger.info("Should never reach here, check Code!");
                 throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                         Reminder.class.getSimpleName()));
             }
-
             if (!Reminder.isValidReminder(reminderEvent)) {
-                throw new IllegalValueException(Reminder.MESSAGE_CONSTRAINTS);
+                logger.warning("Invalid reminder: " + reminderEvent);
+                throw new IllegalValueException(Reminder.REMINDER_MESSAGE_CONSTRAINTS);
             }
-
             if (!Date.isValidDate(reminderDate)) {
-                throw new IllegalValueException(Date.MESSAGE_CONSTRAINTS);
+                logger.warning("Invalid reminder: " + reminderDate);
+                throw new IllegalValueException(Reminder.DATE_MESSAGE_CONSTRAINTS);
             }
-
-            final Reminder modelReminder = new Reminder(reminderEvent, reminderDate);
-
-            return new Application(modelName, modelPhone, modelEmail, modelAddress, modelTags,
-                    modelDate, modelRole, modelStatus, modelReminder);
+            return new Reminder(reminderEvent, reminderDate);
         }
-
-        return new Application(modelName, modelPhone, modelEmail, modelAddress, modelTags,
-                modelDate, modelRole, modelStatus);
+        if (reminderEvent == null ^ reminderDate == null) {
+            logger.info("Should never reach here, check Code!");
+            if (reminderEvent == null) {
+                throw new IllegalValueException(Reminder.REMINDER_MESSAGE_CONSTRAINTS);
+            }
+            throw new IllegalValueException(Reminder.DATE_MESSAGE_CONSTRAINTS);
+        }
+        logger.info("No reminder");
+        return null;
     }
 
+    /**
+     * Parses an optional field.
+     *
+     * @param value Raw string value.
+     * @param validator Function to validate the value.
+     * @param errorMessage Error message if validation fails.
+     * @param constructor Function to construct the object.
+     * @param <T> Type of the parsed object.
+     * @return Parsed object, or null if value is empty.
+     * @throws IllegalValueException If invalid value is passed.
+     */
+    private <T> T parseOptional(
+            String value,
+            Predicate<String> validator,
+            String errorMessage,
+            Function<String, T> constructor) throws IllegalValueException {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        if (!validator.test(value)) {
+            throw new IllegalValueException(errorMessage);
+        }
+        return constructor.apply(value);
+    }
 }
