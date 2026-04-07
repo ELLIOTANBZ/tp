@@ -18,7 +18,8 @@ import seedu.address.model.person.SameCompanySameRolePredicate;
 public class EditEnterCommand extends Command {
 
     public static final String COMMAND_WORD = "editmode";
-    public static final String MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT = "Entering Editing mode as requested ...";
+    public static final String MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT = "Entering editing mode for"
+            + " application: %1$s";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ":\n"
@@ -81,7 +82,9 @@ public class EditEnterCommand extends Command {
         }
 
         applicationToEdit.setBeingEdited(true);
-        return new CommandResult(MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT, false, ParserMode.EDITING, false);
+        String resultMessage = String.format(MESSAGE_ENTER_EDITING_MODE_ACKNOWLEDGEMENT,
+                Messages.format(applicationToEdit));
+        return new CommandResult(resultMessage, false, ParserMode.EDITING, false);
     }
 
 

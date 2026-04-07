@@ -14,7 +14,7 @@ import seedu.address.model.person.IsBeingEditedPredicate;
 /** Command to exit editing mode. */
 public class EditExitCommand extends Command {
 
-    public static final String COMMAND_WORD = "exitedit";
+    public static final String COMMAND_WORD = "editexit";
     public static final String MESSAGE_EXIT_EDITING_MODE_ACKNOWLEDGEMENT = "Exiting Editing mode as requested ...";
 
     @Override
