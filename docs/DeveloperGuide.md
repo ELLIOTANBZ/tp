@@ -630,7 +630,8 @@ but can also choose to add other optional details (date of application, contact 
 * **Application**: A job or internship application submitted by the user to a company.
 * **Duplicate**:  A repeated Application with the same <Company_Name> and <Job_Role>.
 * **Contact**: A record containing information about a company or recruiter, including name, role, and company.
-* **Application Status**:  The current stage of a job application (e.g., Plan to Apply, Applied, Interview, Rejected, Offered).
+* **Application Status**:  The current stage of a job application (e.g., Plan to Apply, Applied, Interview, Pending, Rejected, Offered).
+* **Reminder**: An Event created by user, containing the Event description and date of event.
 * **Notification**:  A reminder sent by OfferFlow to alert the user about upcoming deadlines or interview dates.
 * **Folder**:  A storage group that allows users to archive past job search sessions.
 * **Interaction**:   Any recorded communication or follow-up with a recruiter or company (e.g., email reply or interview invitation).
@@ -712,6 +713,19 @@ testers are expected to do more *exploratory* testing.
        Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
+
+### [Editing an application](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#editing-an-application-editmode)
+
+1. Edit different applications with [different parameters](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#application)
+
+    1. Prerequisites: Add at least one application.
+
+    2. Test case: `editmode 1`<br>
+       Expected: Application enters `editing mode`.
+
+    3. Test case: `s/Applied`<br>
+       Expected: Application status now changed to `Applied`.
+
 
 ### Saving data
 
