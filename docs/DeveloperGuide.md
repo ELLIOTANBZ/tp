@@ -517,11 +517,12 @@ but can also choose to add other optional details (date of application, contact 
 
 **MSS**
 
-1. User requests to edit a particular contact
-2. OfferFlow shows the company's current contact details
-3. User edits contact details such as changing the email and/or phone number
-4. User confirms all changes made to the company contact details
-5. OfferFlow updates the company contact details to reflect the new changes if any
+1. User requests to edit a particular application
+2. OfferFlow shows the company's current application details
+3. User edits application details such as changing the email and/or phone number
+4. OfferFlow updates the company application details to reflect the new changes if any
+   Steps 3-4 are repeated until user is satisfied
+5. User requests to finish editing the application
 
    Use case ends.
 
