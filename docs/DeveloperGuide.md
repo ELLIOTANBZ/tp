@@ -895,7 +895,7 @@ testers are expected to do more *exploratory* testing.
 
     4. Test case: `d/abcde`<br>
        Expected: Edit failed, error details appear.
-    
+
     5. Test case: `editexit`<br>
        Expected: Application exits editing mode.
 
@@ -915,11 +915,15 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `rmr INDEX`<br>
        Expected: Reminder is removed from the Application at specified `INDEX`.
 
+<<<<<<< HEAD
+### [Creating a new folder](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#creating-a-new-offerflow-folder-folder)
+=======
 3. Removing a reminder of a non-existing application.
    1. Test case: `rmr 1000` or `rmr n/invalidwrongname r/nosuchrole`<br>
       Expected: Error warning that application is not found.
 
 ### [Creating a new folder](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#creating-a-new-offerflow-folder--folder)
+>>>>>>> 28697943d72c22204deebbc96f464fef1001a898
 
 1. Creating a folder with a valid name
 
@@ -950,7 +954,7 @@ testers are expected to do more *exploratory* testing.
    3. Test case: `folder name@folder`<br>
       Expected: No folder created. Same error as above.
 
-### [Switching to an existing folder](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#switching-to-an-existing-offerflow-folder--toggle)
+### [Switching to an existing folder](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#switching-to-an-existing-offerflow-folder-toggle)
 
 1. Switching to an existing folder
 
@@ -975,7 +979,7 @@ testers are expected to do more *exploratory* testing.
    2. Test case: `toggle Y1 S2`<br>
       Expected: No switch occurs. Error message stating folder name can only contain letters, numbers, underscores, and hyphens.
 
-### [Listing all folders](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#listing-all-address-books--folders)
+### [Listing all folders](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#listing-all-address-books-folders)
 
 1. Listing folders when folders exist
 
@@ -991,7 +995,8 @@ testers are expected to do more *exploratory* testing.
    2. Test case: `folders`<br>
       Expected: Only `addressbook` is listed.
 
-### Updating application status
+### [Updating application status](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#updating-application-status-status)
+
 
 1. Updating the status of an application
 
@@ -1009,9 +1014,7 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `status n/NUS r/tester s/Waiting`<br>
        Expected: No application is updated. Error details show that the status value is invalid.
 
-1. _{ more test cases ... }_
-
-### Filtering applications
+### [Filtering applications](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#filtering-applications-filter)
 
 1. Filtering applications by supported fields
 
@@ -1025,28 +1028,6 @@ testers are expected to do more *exploratory* testing.
 
     1. Test case: `filter n/Google s/Pending`<br>
        Expected: Only the `Google Product Manager` application is shown because all supplied criteria must match.
-
-
-1. _{ more test cases ... }_
-
-### Saving data
-
-1. Dealing with missing data files
-
-   1. Manually change a status of an application in `[JAR file location]/data/addressbook.json` to `""`
-      Expected: When user reopens the app, the status gets automatically updated to `"Interested"`
-
-   2. Manually change other fields in `[JAR file location]/data/addressbook.json` to `""`
-      Testcase: change name field to `""`
-      Expected: OfferFlow would clear all the applications and start with an empty file
-
-2. Dealing with corrupt data files
-
-   1. Manually change fields in `[JAR file location]/data/addressbook.json` to invalid values
-      Testcase: change phone number field to `12` (phone number must be atleast 3 digits)
-      Expected: OfferFlow would clear all the applications and start with an empty file
-
-
 
 ### [Viewing upcoming applications](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#locating-applications-with-upcoming-deadlines-upcoming)
 
@@ -1071,8 +1052,33 @@ testers are expected to do more *exploratory* testing.
     2. Testcase: Close the application either by typing `exit` or clicking the X on the window. Re-launch the app by double-clicking the jar file.<br>
        Expected: Observed application list on re-launch is the same as before closing the application.
 
-1. _{ more test cases …​ }_
+### Saving data
 
+1. Dealing with missing data files
+
+   1. Manually change a status of an application in `[JAR file location]/data/addressbook.json` to `""`
+      Expected: When user reopens the app, the status gets automatically updated to `"Interested"`
+
+   2. Manually change other fields in `[JAR file location]/data/addressbook.json` to `""`
+      Testcase: change name field to `""`
+      Expected: OfferFlow would clear all the applications and start with an empty file
+
+2. Dealing with corrupt data files
+
+   1. Manually change fields in `[JAR file location]/data/addressbook.json` to invalid values
+      Testcase: change phone number field to `12` (phone number must be atleast 3 digits)
+      Expected: OfferFlow would clear all the applications and start with an empty file
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Effort**
+
+Difficulty: moderate, Effort: moderate
+The AB3’s person constructor had a fixed number of fields and all the fields had to be provided. However, in our app we wanted to allow more fields like reminders, role, date of application and status to make it more appropriate for our context of internship application so it required major changes/updates in some of the existing files including test cases which proved to be a bit time-consuming to refactor.
+
+Difficulty: moderate, Effort: High
+In AB3, creating a personal contact requires a fixed set of parameters. To provide greater flexibility, we modified this behavior so that most fields are optional, allowing users to create an application without having to input every parameter. To support this change, we updated the existing add command logic in AB3 to handle optional fields and manage null values appropriately.Defensive programming techniques and assertions are used to detect and prevent null pointer exceptions, particularly in application creation, editing commands and even loading of addressbook storage files.
+
+AB3 by default cannot have duplicate contact details since it was an address book but our app can have duplicate details since each entry would be applications as it is common for students to apply to the same companies for different job positions. Hence, we had to decide on a way to find duplicate applications and finally we chose to not allow applications of the same name and role as students usually do not apply to the same job position in the same company multiple times simultaneously.
+
+Difficulty: moderate to high
+One challenge faced was maintaining consistency across multiple components (Model, Logic, UI) when introducing new features. For example, implementing filtering required integration with the model’s filtered list, while ensuring that UI updates remained responsive and accurate. As the number of features increased, preserving modularity and avoiding tightly coupled code became increasingly important. Overall, the project required a moderate-to-high level of effort due to the need to extend a pre-existing architecture while maintaining code quality, scalability, and robustness.

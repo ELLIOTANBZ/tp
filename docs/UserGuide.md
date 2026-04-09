@@ -71,7 +71,7 @@ their internship pipeline faster than traditional GUI-based tools.
   e.g. `[t/TAG]…` can be used as ` ` (i.e. 0 times), `t/java`, `t/java t/React` etc.
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit`, `clear`, `folders` and `overwrite`) will be ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit`, `clear`, `folders`, `overwrite` and `editexit`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
   </box>
@@ -99,7 +99,7 @@ Adds the internship application you have applied for, to help track all your app
 <box type="warning" seamless>
 
 **Caution:**
-OfferFlow by default does not allow duplicate application with same name and role. Hence, if you choose to add application with duplicate name and role, you can choose whether or not to [overwrite](#overwrite-duplicate-application--overwrite) it (ie: replace the pre-existing application with the new application)
+OfferFlow by default does not allow duplicate application with same name and role. Hence, if you choose to add application with duplicate name and role, you can choose whether or not to overwrite it (ie: replace the pre-existing application with the new application)
 </box>
 
 Format: `add n/NAME r/ROLE ...`
@@ -127,6 +127,8 @@ Format: `add n/NAME r/ROLE ...`
 
   <img src="images/AddCommand.png" width="500" height="400"/>
 
+
+<a id="overwrite-duplicate-application"></a>
 
 ### Overwrite duplicate application : `overwrite`
 
@@ -368,6 +370,7 @@ Format: `folder FOLDER_NAME`
 **Caution:**
 - Folder name cannot be empty
 - Folder name cannot contain spaces or special characters (e.g. `@`, `.`)
+- Folder names are always saved in lowercase regardless of input (e.g. `folder Y1S2` saves as `data/y1s2.json`)
 - If a folder with the same name already exists (case-insensitive), the command will fail. Use `toggle FOLDER_NAME` to switch to it instead.
 </box>
 
@@ -439,7 +442,7 @@ Format: `exit`
 
 Shows you a message explaining how to access the help page.
 
-  <img src="images/helpMessage.png" width="500" height="400"/>
+  <img src="images/helpMessage.png"/>
 
 Format: `help`
 
