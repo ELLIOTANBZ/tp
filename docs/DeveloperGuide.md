@@ -969,6 +969,44 @@ testers are expected to do more *exploratory* testing.
    2. Test case: `folders`<br>
       Expected: Only `addressbook` is listed.
 
+### Updating application status
+
+1. Updating the status of an application
+
+    1. Prerequisites: Ensure there is an application `NUS` with role `tester` in the list. If not, run `add n/NUS r/tester`.
+
+    1. Test case: `status n/NUS r/tester s/Applied`<br>
+       Expected: The `NUS tester` application remains in the list with status updated to `Applied`. A success message is shown.
+
+    1. Test case: `status n/NUS r/nonexistent s/Rejected`<br>
+       Expected: No application is updated. An error message indicates that the target application could not be found.
+
+    1. Test case: `status n/NUS s/Applied`<br>
+       Expected: No application is updated. Error details show that the command format is invalid because the role is missing.
+
+    1. Test case: `status n/NUS r/tester s/Waiting`<br>
+       Expected: No application is updated. Error details show that the status value is invalid.
+
+1. _{ more test cases ... }_
+
+### Filtering applications
+
+1. Filtering applications by supported fields
+
+    1. Prerequisites: Ensure the following applications exist:
+       `add n/NUS r/tester s/Applied t/java`
+       `add n/Google r/Software Engineer s/Interview t/backend`
+       `add n/Google r/Product Manager s/Pending t/pm`
+
+    1. Test case: `filter s/Applied`<br>
+       Expected: Only applications with status `Applied` are shown.
+
+    1. Test case: `filter n/Google s/Pending`<br>
+       Expected: Only the `Google Product Manager` application is shown because all supplied criteria must match.
+
+
+1. _{ more test cases ... }_
+
 ### Saving data
 
 1. Dealing with missing data files
