@@ -513,11 +513,14 @@ but can also choose to add other optional details (date of application, contact 
 
 **MSS**
 
-1. User requests to edit a particular contact
-2. OfferFlow shows the company's current contact details
-3. User edits contact details such as changing the email and/or phone number
-4. User confirms all changes made to the company contact details
-5. OfferFlow updates the company contact details to reflect the new changes if any
+1. User requests to edit a particular application
+2. OfferFlow shows the company's current application details
+3. User edits application details such as changing the email and/or phone number
+4. OfferFlow updates the company application details to reflect the new changes if any
+
+    Steps 3-4 are repeated until user is satisfied
+
+5. User requests to finish editing the application
 
    Use case ends.
 
@@ -751,6 +754,17 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case ends.
 
+
+**Use case: UC6 - View upcoming applications**
+
+**MSS**
+
+The MSS is similar to Use case: Filter applications but user only specifies the range of days.
+
+**Extensions**
+
+The extensions are similar to Use case: Filter applications.
+
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
@@ -967,6 +981,44 @@ testers are expected to do more *exploratory* testing.
    2. Test case: `folders`<br>
       Expected: Only `addressbook` is listed.
 
+### Updating application status
+
+1. Updating the status of an application
+
+    1. Prerequisites: Ensure there is an application `NUS` with role `tester` in the list. If not, run `add n/NUS r/tester`.
+
+    1. Test case: `status n/NUS r/tester s/Applied`<br>
+       Expected: The `NUS tester` application remains in the list with status updated to `Applied`. A success message is shown.
+
+    1. Test case: `status n/NUS r/nonexistent s/Rejected`<br>
+       Expected: No application is updated. An error message indicates that the target application could not be found.
+
+    1. Test case: `status n/NUS s/Applied`<br>
+       Expected: No application is updated. Error details show that the command format is invalid because the role is missing.
+
+    1. Test case: `status n/NUS r/tester s/Waiting`<br>
+       Expected: No application is updated. Error details show that the status value is invalid.
+
+1. _{ more test cases ... }_
+
+### Filtering applications
+
+1. Filtering applications by supported fields
+
+    1. Prerequisites: Ensure the following applications exist:
+       `add n/NUS r/tester s/Applied t/java`
+       `add n/Google r/Software Engineer s/Interview t/backend`
+       `add n/Google r/Product Manager s/Pending t/pm`
+
+    1. Test case: `filter s/Applied`<br>
+       Expected: Only applications with status `Applied` are shown.
+
+    1. Test case: `filter n/Google s/Pending`<br>
+       Expected: Only the `Google Product Manager` application is shown because all supplied criteria must match.
+
+
+1. _{ more test cases ... }_
+
 ### Saving data
 
 1. Dealing with missing data files
@@ -983,6 +1035,33 @@ testers are expected to do more *exploratory* testing.
    1. Manually change fields in `[JAR file location]/data/addressbook.json` to invalid values
       Testcase: change phone number field to `12` (phone number must be atleast 3 digits)
       Expected: OfferFlow would clear all the applications and start with an empty file
+
+
+
+### [Viewing upcoming applications](https://ay2526s2-cs2103t-f10-4.github.io/tp/UserGuide.html#locating-applications-with-upcoming-deadlines-upcoming)
+
+1. Viewing upcoming applications
+
+    1. Test case: `upcoming 5`<br>
+       Expected: Only applications with deadlines due within 5 days of current date are shown. Applications with overdue deadlines or no deadlines should not be shown.
+
+    2. Testcase: `upcoming 9`<br>
+       Expected: Command fails. Specified number of days out of bounds.
+
+    3. Testcase: `upcoming i`<br>
+       Expected: Command fails. i is not a valid input for number of days.
+
+    4. Testcase: `upcoming`<br>
+       Expected: Command fails. Specified number of days cannot be blank.
+
+2. Upcoming command is saved between exit and startup.
+
+    1. Prerequisites: Perform test case: `upcoming 5`.
+
+    2. Testcase: Close the application either by typing `exit` or clicking the X on the window. Re-launch the app by double-clicking the jar file.<br>
+       Expected: Observed application list on re-launch is the same as before closing the application.
+
+1. _{ more test cases …​ }_
 
 --------------------------------------------------------------------------------------------------------------------
 
