@@ -1066,3 +1066,14 @@ testers are expected to do more *exploratory* testing.
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Effort**
+
+Difficulty: moderate, Effort: moderate
+The AB3’s person constructor had a fixed number of fields and all the fields had to be provided. However, in our app we wanted to allow more fields like reminders, role, date of application and status to make it more appropriate for our context of internship application so it required major changes/updates in some of the existing files including test cases which proved to be a bit time-consuming to refactor.
+
+Difficulty: moderate, Effort: High
+In AB3, creating a personal contact requires a fixed set of parameters. To provide greater flexibility, we modified this behavior so that most fields are optional, allowing users to create an application without having to input every parameter. To support this change, we updated the existing add command logic in AB3 to handle optional fields and manage null values appropriately.Defensive programming techniques and assertions are used to detect and prevent null pointer exceptions, particularly in application creation, editing commands and even loading of addressbook storage files.
+
+AB3 by default cannot have duplicate contact details since it was an address book but our app can have duplicate details since each entry would be applications as it is common for students to apply to the same companies for different job positions. Hence, we had to decide on a way to find duplicate applications and finally we chose to not allow applications of the same name and role as students usually do not apply to the same job position in the same company multiple times simultaneously.
+
+Difficulty: moderate to high
+One challenge faced was maintaining consistency across multiple components (Model, Logic, UI) when introducing new features. For example, implementing filtering required integration with the model’s filtered list, while ensuring that UI updates remained responsive and accurate. As the number of features increased, preserving modularity and avoiding tightly coupled code became increasingly important. Overall, the project required a moderate-to-high level of effort due to the need to extend a pre-existing architecture while maintaining code quality, scalability, and robustness.

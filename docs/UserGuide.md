@@ -368,6 +368,7 @@ Format: `folder FOLDER_NAME`
 **Caution:**
 - Folder name cannot be empty
 - Folder name cannot contain spaces or special characters (e.g. `@`, `.`)
+- Folder names are always saved in lowercase regardless of input (e.g. `folder Y1S2` saves as `data/y1s2.json`)
 - If a folder with the same name already exists (case-insensitive), the command will fail. Use `toggle FOLDER_NAME` to switch to it instead.
 </box>
 
