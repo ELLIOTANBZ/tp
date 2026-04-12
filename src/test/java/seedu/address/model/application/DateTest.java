@@ -41,6 +41,10 @@ public class DateTest {
         assertFalse(Date.isValidDate("2026/12/12")); // wrong format (/) (equivalence paritioning)
         assertFalse(Date.isValidDate("202#$-12-12")); // symbols not allowed (equivalence paritioning)
         assertFalse(Date.isValidDate("2026-02-30")); // invalid date (equivalence paritioning)
+        assertFalse(Date.isValidDate("0000-02-15")); // invalid year (boundary value analysis)
+        assertFalse(Date.isValidDate("2026-00-10")); // invalid month (boundary value analysis)
+        assertFalse(Date.isValidDate("2026-02-00")); // invalid day (boundary value analysis)
+
         assertTrue(Date.isValidDate("2026-12-12")); // boundary value for month as last month
         assertTrue(Date.isValidDate("2026-01-12")); // (boundary value analysis) 1st month
         assertTrue(Date.isValidDate("2026-11-30")); // (boundary value analysis) last day of month

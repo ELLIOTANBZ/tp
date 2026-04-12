@@ -24,7 +24,7 @@ public class Date {
      * - Month: 01-12
      * - Day: 01-31
      */
-    public static final String VALIDATION_REGEX = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+    public static final String VALIDATION_REGEX = "^(?!0000)\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
 
     public final String value;
     private final LocalDate localDate;
