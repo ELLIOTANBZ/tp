@@ -10,7 +10,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class FolderCommandParser implements Parser<FolderCommand> {
 
-    private static final String VALID_FOLDER_NAME_REGEX = "[\\w\\-]+";
+    private static final String VALID_FOLDER_NAME_REGEX = "[\\w\\-.@ ]+";
 
     @Override
     public FolderCommand parse(String args) throws ParseException {
@@ -20,7 +20,10 @@ public class FolderCommandParser implements Parser<FolderCommand> {
             throw new ParseException("Folder name cannot be empty.\n" + FolderCommand.MESSAGE_USAGE);
         }
         if (!name.matches(VALID_FOLDER_NAME_REGEX)) {
-            throw new ParseException("Folder name can only contain letters, numbers, underscores, and hyphens.");
+            throw new ParseException(
+                "Folder name can only contain letters, numbers, spaces, "
+                + "underscores (_), hyphens (-), dots (.), and '@' symbols."
+            );
         }
         return new FolderCommand(name);
     }

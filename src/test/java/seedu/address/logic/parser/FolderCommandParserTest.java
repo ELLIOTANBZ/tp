@@ -18,15 +18,15 @@ public class FolderCommandParserTest {
     }
 
     @Test
-    public void parse_nameWithSpaces_throwsParseException() {
-        assertParseFailure(parser, "Y1 S2",
-                "Folder name can only contain letters, numbers, underscores, and hyphens.");
+    public void parse_validArgsWithSpaces_returnsFolderCommand() {
+        assertParseSuccess(parser, "Y1 S2", new FolderCommand("y1 s2"));
     }
 
     @Test
     public void parse_nameWithSpecialChars_throwsParseException() {
-        assertParseFailure(parser, "name@folder",
-                "Folder name can only contain letters, numbers, underscores, and hyphens.");
+        assertParseFailure(parser, "name!folder",
+                "Folder name can only contain letters, numbers, spaces, "
+                + "underscores (_), hyphens (-), dots (.), and '@' symbols.");
     }
 
     @Test
@@ -52,6 +52,16 @@ public class FolderCommandParserTest {
     @Test
     public void parse_validArgsNumericOnly_returnsFolderCommand() {
         assertParseSuccess(parser, "123", new FolderCommand("123"));
+    }
+
+    @Test
+    public void parse_validArgsWithAt_returnsFolderCommand() {
+        assertParseSuccess(parser, "name@folder", new FolderCommand("name@folder"));
+    }
+
+    @Test
+    public void parse_validArgsWithDot_returnsFolderCommand() {
+        assertParseSuccess(parser, "Y1.S2", new FolderCommand("y1.s2"));
     }
 
 }

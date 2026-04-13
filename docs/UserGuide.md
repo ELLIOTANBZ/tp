@@ -153,7 +153,7 @@ If you choose to overwrite, type `overwrite`. If not, continue using the app as 
 Format:
 1. `editmode INDEX` or `editmode n/NAME r/ROLE` to enter edit mode to edit that particular application
 2. Type in any combination of at least one of the internship application parameters [above](#application) to edit the application
-3. `exitedit` to finish editing and exit the editing mode
+3. `editexit` to finish editing and exit the editing mode
 
 ⚠️ Notes:
 * Enters editing mode for the application at the specified `INDEX` or with the specified `NAME` and `ROLE`. The index refers to the index number shown in the displayed application list. The index **must be a positive integer** 1, 2, 3, …
@@ -310,7 +310,7 @@ Filters applications by company, applied date, role, status, and/or tag. Allows 
 
 Format:
 * `filter n/NAME`
-* `filter d/YYY-MM-DD`
+* `filter d/YYYY-MM-DD`
 * `filter r/ROLE`
 * `filter s/STATUS`
 * `filter t/TAG`
@@ -363,13 +363,13 @@ Creates a new empty OfferFlow folder saved under `data/FOLDER_NAME.json` and swi
 Format: `folder FOLDER_NAME`
 
 ⚠️ Note:
-* `FOLDER_NAME` contains letters, numbers, underscores, and hyphens only
+* `FOLDER_NAME` can only contain letters, numbers, spaces, underscores (`_`), hyphens (`-`), dots (`.`), and `@` symbols
 
 <box type="warning" seamless>
 
 **Caution:**
 - Folder name cannot be empty
-- Folder name cannot contain spaces or special characters (e.g. `@`, `.`)
+- Folder name cannot contain special characters other than underscores (`_`), hyphens (`-`), dots (`.`), and `@` symbols
 - Folder names are always saved in lowercase regardless of input (e.g. `folder Y1S2` saves as `data/y1s2.json`)
 - If a folder with the same name already exists (case-insensitive), the command will fail. Use `toggle FOLDER_NAME` to switch to it instead.
 </box>
@@ -397,7 +397,7 @@ Format: `toggle FOLDER_NAME`
 
 **Caution:**
 - Folder name cannot be empty
-- Folder name cannot contain spaces or special characters
+- Folder name cannot contain special characters other than underscores (`_`), hyphens (`-`), dots (`.`), and `@` symbols
 - The address book file must already exist at `data/FOLDER_NAME.json`
 - Folder names are case-insensitive — `toggle Y1S2` and `toggle y1s2` switch to the same file `data/y1s2.json`
 </box>
@@ -486,7 +486,7 @@ Furthermore, certain edits can cause OfferFlow to behave in unexpected ways (e.g
 | **Delete**          | `delete INDEX` or `delete n/NAME r/ROLE`                                                           | `delete 3` or `delete n/Google r/Backend Developer`                                                                              |
 | **Enter Edit**      | `editmode INDEX` or `editmode n/NAME r/ROLE`                                                       | `editmode 1` or `editmode n/Nus r/System Engineer`                                                                               |
 | **Edit**            | While in editmode: `a/ADDRESS` or `s/STATUS` or ...                                                   | `a/Mapletree Business City II, Pasir Panjang area` or `s/applied`                                                                |
-| **Exit Edit**       | `editexit`                                                                                         | `exitedit`                                                                                                                       |
+| **Exit Edit**       | `editexit`                                                                                         | `editexit`                                                                                                                       |
 | **Remove Reminder** | `rmr INDEX` or `rmr n/NAME r/ROLE`                                                                 | `rmr 3` or `rmr n/Google r/Backend Developer`                                                                                    |
 | **Status**          | `status n/COMPANY r/ROLE s/STATUS`                                                                 | `status n/Tiktok r/Data Analyst s/Rejected`                                                                                      |
 | **Find**            | `find KEYWORD [MORE_KEYWORDS]`                                                                     | `find James Jake`                                                                                                                |
