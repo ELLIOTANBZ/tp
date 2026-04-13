@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.function.Predicate;
 
-import javafx.collections.FXCollections;
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
