@@ -84,13 +84,13 @@ Each application supports the following parameters:
 #### Parameters
 - `n/NAME` → Name of the company
 - `r/ROLE` → job position applied for
-- `p/PHONE` → company telephone number
-- `e/EMAIL` → company email
-- `a/ADDRESS` → company location
-- `d/DATE` → date when you applied
-- `s/STATUS` → application progress
-- `t/TAGS` → optional fields
-- `u/REMINDER ud/DATE` → Reminder description and Date of reminder
+- `p/[PHONE]` → company telephone number
+- `e/[EMAIL]` → company email
+- `a/[ADDRESS]` → company location
+- `d/[DATE]` → date when you applied
+- `s/[STATUS]` → application progress
+- `t/[TAGS]` → optional fields
+- `u/[REMINDER] ud/[DATE]` → Reminder description and Date of reminder
 
 ### Adding an internship application: `add`
 
