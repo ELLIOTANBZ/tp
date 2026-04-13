@@ -30,6 +30,6 @@ public class StatusCommandTest {
     public void execute_applicationNotFound_throwsCommandException() {
         StatusCommand command = new StatusCommand("NonExistentName", "Engineer", new Status("Applied"));
 
-        assertCommandFailure(command, model, Messages.MESSAGE_APPLICATION_NOT_IN_FILTERED);
+        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_APPLICATION_IDENTIFIER);
     }
 }
