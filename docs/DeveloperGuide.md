@@ -399,8 +399,6 @@ The following activity diagram summarizes what happens when a user executes a ne
   * Pros: Will use less memory (e.g. for `delete`, just save the application being deleted).
   * Cons: We must ensure that the implementation of each individual command are correct.
 
-_{more aspects and alternatives to be added}_
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
@@ -449,9 +447,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | user              | ensure buttons, tabs, and statuses look consistent        | avoid getting confused while navigating                          |
 | `*`      | user with different accessibility needs             | ensure the app can support accessibility standards (e.g., screen readers, adjustable text size, dark mode),         | use it more conveniently                         |
 | `*`      | busy student             | see a visual diagram of all the statuses of my applications            | quickly get an overview of my progress                |
-
-
-*{More to be added}*
 
 ### Use cases
 
@@ -510,7 +505,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case ends.
 
-**Use case: Edit an application**
+**Use case: UC3 - Edit an application**
 
 **MSS**
 
@@ -545,7 +540,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case resumes at step 3.
 
-**Use case: Edit Reminder**
+**Use case: UC4 - Edit Reminder**
 
 **MSS**
 
@@ -576,7 +571,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case resumes at step 3.
 
-**Use case: Update status**
+**Use case: UC5 - Update status**
 
 **MSS**
 
@@ -607,7 +602,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case ends.
 
-**Use case: Delete an application**
+**Use case: UC6 - Delete an application**
 
 **MSS**
 
@@ -633,7 +628,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case resumes at step 1.
 
-**Use case: Filter applications**
+**Use case: UC7 - Filter applications**
 
 **MSS**
 
@@ -667,10 +662,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case ends.
 
-**Use case: UC3 - Create a new folder**
-
-**System:** OfferFlow
-**Actor:** User
+**Use case: UC8 - Create a new folder**
 
 **MSS**
 
@@ -701,10 +693,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case ends.
 
-**Use case: UC4 - Switch to an existing folder**
-
-**System:** OfferFlow
-**Actor:** User
+**Use case: UC9 - Switch to an existing folder**
 
 **MSS**
 
@@ -735,10 +724,7 @@ but can also choose to add other optional details (date of application, contact 
 
       Use case ends.
 
-**Use case: UC5 - List all folders**
-
-**System:** OfferFlow
-**Actor:** User
+**Use case: UC10 - List all folders**
 
 **MSS**
 
@@ -756,7 +742,7 @@ but can also choose to add other optional details (date of application, contact 
       Use case ends.
 
 
-**Use case: UC6 - View upcoming applications**
+**Use case: UC11 - View upcoming applications**
 
 **MSS**
 
@@ -788,8 +774,6 @@ The extensions are similar to Use case: Filter applications.
 18. The program should remain or return to its latest correct state when an error occurs
 19. The program code should follow the coding standards of cs2103.
 20. The application should run on both Windows and macOS environments.
-
-*{More to be added}*
 
 ### Glossary
 
