@@ -28,7 +28,7 @@ public class ParserUtilTest {
     private static final String INVALID_PHONE = "+65  1234"; //consective spaces not allowed (EP)
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_TAG = "# friend";
     private static final String INVALID_DATE = "2024-13-45";
     private static final String INVALID_ROLE = "";
     private static final String INVALID_STATUS = " ";

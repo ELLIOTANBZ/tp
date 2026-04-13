@@ -26,7 +26,7 @@ public class JsonAdaptedApplicationTest {
     private static final String INVALID_PHONE = "+65  1234";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_TAG = "# friend";
     private static final String INVALID_DATE = "2025-02-31";
     private static final String INVALID_ROLE = "";
     private static final String INVALID_STATUS = " ";
