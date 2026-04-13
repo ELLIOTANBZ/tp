@@ -35,7 +35,7 @@ public class UpcomingCommandParserTest {
     public void parse_outOfRangeIntArg_throwsParseException() {
         assertParseFailure(parser, "   -12  ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                         UpcomingCommand.MESSAGE_INVALID_ARGS));
-        assertParseFailure(parser, "   9  ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+        assertParseFailure(parser, "   100  ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                                         UpcomingCommand.MESSAGE_INVALID_ARGS));
     }
 

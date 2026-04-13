@@ -1,7 +1,6 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_APPLICATION;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +19,8 @@ public class AddressBookEditingParserTest {
     public void parseCommand_edit() throws Exception {
         Application application = new ApplicationBuilder().build();
         EditApplicationDescriptor descriptor = new EditApplicationDescriptorBuilder(application).build();
-        EditCommand command = (EditCommand) parser.parseCommand(INDEX_FIRST_APPLICATION.getOneBased() + " "
-                                        + ApplicationUtil.getEditApplicationDescriptorDetails(descriptor));
+        EditCommand command = (EditCommand) parser.parseCommand(ApplicationUtil
+                .getEditApplicationDescriptorDetails(descriptor));
         assertEquals(new EditCommand(descriptor), command);
     }
 }
