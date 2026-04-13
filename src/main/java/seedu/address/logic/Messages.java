@@ -18,6 +18,7 @@ public class Messages {
             "Application index is invalid. Please select a valid index from the list.";
     public static final String MESSAGE_INVALID_APPLICATION_IDENTIFIER =
             "No application found with the given name and role.";
+    public static final String MESSAGE_APPLICATION_NOT_IN_FILTERED = "Application not in filtered list, return to list";
     public static final String MESSAGE_APPLICATIONS_LISTED_OVERVIEW = "%1$d applications listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";

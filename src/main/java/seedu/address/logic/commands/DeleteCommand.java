@@ -107,10 +107,13 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
         List<Application> lastShownList = model.getFilteredApplicationList();
         SameCompanySameRolePredicate predicate = new SameCompanySameRolePredicate(name, role);
+        if (model.appNotInFullList(predicate)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_APPLICATION_IDENTIFIER);
+        }
         Application applicationToDelete = lastShownList.stream()
                 .filter(predicate)
                 .findFirst()
-                .orElseThrow(() -> new CommandException(Messages.MESSAGE_INVALID_APPLICATION_IDENTIFIER));
+                .orElseThrow(() -> new CommandException(Messages.MESSAGE_APPLICATION_NOT_IN_FILTERED));
         assert applicationToDelete != null : "should have thrown exception";
         model.deleteApplication(applicationToDelete);
         assert !model.hasApplication(applicationToDelete) : "failed to delete application";

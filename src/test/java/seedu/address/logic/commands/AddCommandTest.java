@@ -207,6 +207,12 @@ public class AddCommandTest {
         public void updateFilteredApplicationList(Predicate<Application> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        // placeholder
+        @Override
+        public boolean appNotInFullList(Predicate<Application> predicate) {
+            return true;
+        }
     }
 
     /**
