@@ -75,7 +75,7 @@ public class OverwriteCommand extends Command {
      */
     private Application findExistingApplication(Model model, Application newApplication) {
         assert newApplication != null : "new application should not be null";
-        List<Application> currentList = model.getFilteredApplicationList();
+        List<Application> currentList = model.getAddressBook().getApplicationList();
 
         return currentList.stream().filter(application -> application.isSameApplication(newApplication)).findAny()
                                         .orElse(null);

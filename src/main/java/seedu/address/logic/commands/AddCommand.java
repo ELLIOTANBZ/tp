@@ -33,7 +33,7 @@ public class AddCommand extends Command {
                                     + "Required fields: n/NAME r/ROLE and the other fields are optional\n" + PREFIX_NAME
                                     + "NAME " + PREFIX_PHONE + "PHONE " + PREFIX_EMAIL + "EMAIL " + PREFIX_ADDRESS
                                     + "ADDRESS " + PREFIX_ROLE + "ROLE " + PREFIX_DATE + "DATE " + PREFIX_STATUS
-                                    + "STATUS " + PREFIX_TAG + "[TAGS...] " + PREFIX_REMINDER + "REMINDER "
+                                    + "STATUS " + PREFIX_TAG + "TAGS... " + PREFIX_REMINDER + "REMINDER "
                                     + PREFIX_REMINDER_DATE + "REMINDER_DATE\n" + "Example:\n"
                                     + "add n/Microsoft p/4258828080 e/jobs@microsoft.com "
                                     + "a/One Microsoft Way, Redmond, WA " + "d/2024-03-16 r/Product Manager "
@@ -81,7 +81,7 @@ public class AddCommand extends Command {
      */
     private void checkForDuplicate(Model model) throws CommandException {
         if (model.hasApplication(toAdd)) {
-            Application existingApplication = model.getFilteredApplicationList().stream()
+            Application existingApplication = model.getAddressBook().getApplicationList().stream()
                                             .filter(application -> application.isSameApplication(toAdd)).findAny()
                                             .orElse(null);
 

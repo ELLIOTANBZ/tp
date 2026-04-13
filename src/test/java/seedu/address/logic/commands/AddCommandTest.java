@@ -232,6 +232,13 @@ public class AddCommandTest {
             list.add(application);
             return javafx.collections.FXCollections.observableArrayList(list);
         }
+
+        @Override
+        public ReadOnlyAddressBook getAddressBook() {
+            AddressBook addressbook = new AddressBook();
+            addressbook.addApplication(application);
+            return addressbook;
+        }
     }
 
     /**
