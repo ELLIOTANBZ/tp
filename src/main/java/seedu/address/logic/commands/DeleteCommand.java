@@ -107,6 +107,9 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
         List<Application> lastShownList = model.getFilteredApplicationList();
         SameCompanySameRolePredicate predicate = new SameCompanySameRolePredicate(name, role);
+        if (model.appNotInFullList(predicate)) {
+            throw new CommandException("not in list");
+        }
         Application applicationToDelete = lastShownList.stream()
                 .filter(predicate)
                 .findFirst()

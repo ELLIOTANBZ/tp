@@ -95,4 +95,6 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredApplicationList(Predicate<Application> predicate);
+
+    boolean appNotInFullList(Predicate<Application> predicate);
 }

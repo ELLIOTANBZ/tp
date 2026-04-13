@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
@@ -139,6 +140,12 @@ public class ModelManager implements Model {
     public void updateFilteredApplicationList(Predicate<Application> predicate) {
         requireNonNull(predicate);
         filteredApplications.setPredicate(predicate);
+    }
+
+    @Override
+    public boolean appNotInFullList(Predicate<Application> predicate) {
+        ObservableList<Application> fullList = FXCollections.observableArrayList(filteredApplications.getSource());
+        return fullList.stream().filter(predicate).findAny().isEmpty();
     }
 
     @Override
