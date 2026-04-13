@@ -84,13 +84,13 @@ Each application supports the following parameters:
 #### Parameters
 - `n/NAME` → Name of the company
 - `r/ROLE` → job position applied for
-- `p/PHONE` → company telephone number
-- `e/EMAIL` → company email
-- `a/ADDRESS` → company location
-- `d/DATE` → date when you applied
-- `s/STATUS` → application progress
-- `t/TAGS` → optional fields
-- `u/REMINDER ud/DATE` → Reminder description and Date of reminder
+- `p/[PHONE]` → company telephone number
+- `e/[EMAIL]` → company email
+- `a/[ADDRESS]` → company location
+- `d/[DATE]` → date when you applied
+- `s/[STATUS]` → application progress
+- `t/[TAGS]` → optional fields
+- `u/[REMINDER] ud/[DATE]` → Reminder description and Date of reminder
 
 ### Adding an internship application: `add`
 
@@ -242,9 +242,15 @@ Format: `status n/COMPANY_NAME r/JOB_ROLE s/STATUS`
 
 </box>
 
-⚠️ Note:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * Application with the name and role must exist in order to update status
 * Status to change to must be a valid status (see below)
+* Default status is `Interested` if no status provided
+  (eg: `status n/google r/software engineer s/` changes the application status to `Interested`)
+
+</box>
 
 #### Valid Statuses
 | Status         | When to use                                                                     |
