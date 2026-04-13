@@ -168,7 +168,9 @@ Format:
 2. Type in any combination of at least one of the internship application parameters [above](#application) to edit the application
 3. `editexit` to finish editing and exit the editing mode
 
-⚠️ Notes:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * Enters editing mode for the application at the specified `INDEX` or with the specified `NAME` and `ROLE`. The index refers to the index number shown in the displayed application list. The index **must be a positive integer** 1, 2, 3, …
 * Once editing mode is entered, *all commands* except for *editexit* and *editing commands* will be disabled.
 * Edit the application in edit mode by typing in at least one of the optional fields.
@@ -176,6 +178,8 @@ Format:
 * When editing tags, the existing tags of the application will be removed i.e adding of tags is not cumulative.
 * You can remove all the application’s tags by typing `t/` without
   specifying any tags after it.
+
+</box>
 
 <box type="tip" seamless>
 
@@ -201,9 +205,13 @@ Use `editmode` command to modify or create new Reminders.
 
 Format: `u/DESCRIPTION ud/DATE`
 
-⚠️ Note:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * both `u/DESCRIPTION ud/DATE` must be provided to modify/create reminders
 * reminder allows past dates as well
+
+</box>
 
 #### Example:
 * `editmode 2`
@@ -220,9 +228,13 @@ Use `rmr` command **outside** of `editmode` to remove Reminder of specified Appl
 
 Format: `rmr INDEX` or `rmr n/NAME r/ROLE`
 
-⚠️ Note:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * `INDEX`: Application index reflected on list.
 * `n/NAME r/ROLE`: represents an Application to `NAME` for `ROLE`.
+
+</box>
 
 #### Example:
 * `rmr 2` or `rmr n/Tiktok r/data analyst`
@@ -289,13 +301,17 @@ Helps you finds applications whose company names contain any of the given keywor
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
-⚠️ Note:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * The search is case-insensitive. e.g `google` will match `Google`
 * The order of the keywords does not matter. e.g. `Google Meta` will match `Meta Google`
 * Only the company name is searched.
 * Only full words will be matched e.g. `Goog` will not match `Google`
 * Applications matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Google Meta` will return `Google`, `Meta`
+
+</box>
 
 #### Examples
 * `find Meta` returns all applications applied to `Meta`
@@ -319,10 +335,14 @@ filters for applications with reminders due within one week on start-up.
 
 Format: `upcoming DAYS`
 
-⚠️ Note:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * Applications with no reminders at all will not be returned.
 * Applications with reminders that are overdue (e.g due prior to the current date) will not be returned.
 * `DAYS` is an integer from 0 to 7 inclusive
+
+</box>
 
 #### Examples
 * `upcoming 0` returns all applications with reminders due within 0 days of today, ergo by today.
@@ -342,12 +362,15 @@ Format:
 * `filter s/STATUS`
 * `filter t/TAG`
 
+<box type="info" seamless>
 
-⚠️ Note:
+**⚠️ Note:**
 * Filter matching is case-insensitive.
 * Leading and trailing spaces are ignored.
 * Internal spacing still matters.
 * Applied dates must use `YYYY-MM-DD`.
+
+</box>
 
 Examples:
 * `filter n/Google`
@@ -389,8 +412,12 @@ Creates a new empty OfferFlow folder saved under `data/FOLDER_NAME.json` and swi
 
 Format: `folder FOLDER_NAME`
 
-⚠️ Note:
+<box type="info" seamless>
+
+**⚠️ Note:**
 * `FOLDER_NAME` can only contain letters, numbers, spaces, underscores (`_`), hyphens (`-`), dots (`.`), and `@` symbols
+
+</box>
 
 <box type="warning" seamless>
 
@@ -413,8 +440,13 @@ Format: `folder FOLDER_NAME`
 
 ### Switching to an existing OfferFlow folder : `toggle`
 
-⚠️ Note:
-The default folder is called `addressbook`
+<box type="info" seamless>
+
+**⚠️ Note:**
+* The default folder is called `addressbook`
+
+</box>
+
 
 Switches to an existing OfferFlow folder saved under `data/FOLDER_NAME.json`.
 
@@ -453,7 +485,11 @@ Format: `folders`
 
 ### Clearing all entries : `clear`
 
-⚠️ Removes **ALL** applications. Use with caution.
+<box type="warning" seamless>
+
+**Caution:**
+* ⚠️ Removes **ALL** applications. Use with caution.
+</box>
 
 You can delete all applications on OfferFlow with just 1 command hassle-free!
 
